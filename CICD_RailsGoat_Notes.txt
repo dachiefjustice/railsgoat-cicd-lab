@@ -15,3 +15,7 @@ RailsGoat CI-CD Notes
 - Installed the suggested mysql dev package with: sudo apt-get install libmysqlclient-dev
 - Re-ran the RVM source command, cd'ed back into the railsgoat cloned dir, re-ran bundle install, this worked
 - Added libmysqlclient-dev to the Vagrant provisioner
+- Initialized DB with: rails db:setup
+- The DB defaulted to using an SQLite DB, created 2 DBs (<railsgoatdir>/db/test.sqlite3 and <railsgoatdir>/db/development.sqlite3)
+- Started server running with: rails server
+- WEBrick Server listening on VM's TCP/3000, modified Vagrantfile to forward this port to the host
