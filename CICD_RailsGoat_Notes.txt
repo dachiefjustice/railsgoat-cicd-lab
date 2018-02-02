@@ -1,0 +1,17 @@
+=====================
+RailsGoat CI-CD Notes
+=====================
+
+====Manual Installation====
+- https://github.com/OWASP/railsgoat
+- Make a Vagrant box with git, tmux, curl installed
+- Install RVM + Ruby as non-root user, with: curl -L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=2.4.3
+	- This command installs some dependencies, which worked as non-root
+- Cloned RailsGoat repo with: git clone https://github.com/OWASP/railsgoat.git
+- Changing into the cloned dir automatically created a new gemset (compartmentalized ruby + gem setup) at /home/vagrant/.rvm/gems/ruby-2.4.3@railsgoat
+- Activated RVM with: source ~/.rvm/scripts/rvm
+- Needed to install bundler with: gem install bundler (this installed it to the gemset)
+- In the cloned dir, install dependent gems with: bundle install. This failed initially, complaining about lack of mysql client (mysql client is missing. You may need to 'apt-get install libmysqlclient-dev' or 'yum install mysql-devel', and try again.).
+- Installed the suggested mysql dev package with: sudo apt-get install libmysqlclient-dev
+- Re-ran the RVM source command, cd'ed back into the railsgoat cloned dir, re-ran bundle install, this worked
+- Added libmysqlclient-dev to the Vagrant provisioner
