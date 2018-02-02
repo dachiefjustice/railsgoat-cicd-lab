@@ -69,10 +69,9 @@ Vagrant.configure("2") do |config|
   # SHELL
   
   # Manually-added shell provisioning for common tools (git, tmux, curl)
-  # Manually-added provisioning for CI/CD lab:
-  #   - software-properties-common (for installing RVM via PPA, https://github.com/rvm/ubuntu_rvm)
+  # Manually-added provisioning for CI/CD lab: libmysqlclient-dev
 	config.vm.provision "shell", inline: <<-SHELL
 		apt-get update
-		apt-get install -y tmux git curl software-properties-common
+		apt-get install -y tmux git curl libmysqlclient-dev 
 	SHELL
 end
