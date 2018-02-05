@@ -86,7 +86,7 @@ Vagrant.configure("2") do |config|
   # SHELL
   
   # First do the provisioning with sudo, to install common utilities
-  config.vm.provision "shell", inline: $privileged_provisioningi, privileged: true
+  config.vm.provision "shell", inline: $privileged_provisioning, privileged: true
   
   # Then user-specific provisioning to get railsgoat set up
   config.vm.provision "shell", inline: $nonprivileged_provisioning, privileged: false
