@@ -5,7 +5,7 @@
 # Install Jenkins dependencies + Jenkins
 $privileged_provisioning = <<PRIVILEGED_PROV
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
-echo -n "
+echo "
 ## Added via Vagrant provisioning for Jenkins LTS releases
 deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
 apt-get update
