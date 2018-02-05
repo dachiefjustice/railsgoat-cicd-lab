@@ -1,6 +1,23 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Manually-added shell provisioning for common tools (git, tmux, curl)
+# Manually-added provisioning for CI/CD lab: libmysqlclient-dev
+$privileged_provisioning = <<PRIVILEGED_PROV
+apt-get update
+apt-get install -y tmux git curl libmysqlclient-dev
+PRIVILEGED_PROV
+
+$nonprivileged_provisioning = <<NONPRIVILEGED_PROV
+curl -L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=2.4.3
+git clone https://github.com/OWASP/railsgoat.git
+cd railsgoat
+source ~/.rvm/scripts/rvm
+gem install bundler
+bundle install
+rails db:setup
+NONPRIVILEGED_PROV
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -29,7 +46,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
   config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
-
+  
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
@@ -68,10 +85,9 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   
-  # Manually-added shell provisioning for common tools (git, tmux, curl)
-  # Manually-added provisioning for CI/CD lab: libmysqlclient-dev
-	config.vm.provision "shell", inline: <<-SHELL
-		apt-get update
-		apt-get install -y tmux git curl libmysqlclient-dev 
-	SHELL
+  # First do the provisioning with sudo, to install common utilities
+  config.vm.provision "shell", inline: $privileged_provisioningi, privileged: true
+  
+  # Then user-specific provisioning to get railsgoat set up
+  config.vm.provision "shell", inline: $nonprivileged_provisioning, privileged: false
 end
