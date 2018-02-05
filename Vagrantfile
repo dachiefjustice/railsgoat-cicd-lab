@@ -1,14 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Manually-added shell provisioning for common tools (git, tmux, curl)
-# Manually-added provisioning for CI/CD lab: libmysqlclient-dev
+# Install common tools (git, tmux, curl), and dependency for railsgoat CI/CD lab: libmysqlclient-dev
 $privileged_provisioning = <<PRIVILEGED_PROV
 apt-get update
 apt-get install -y tmux git curl libmysqlclient-dev
 PRIVILEGED_PROV
 
+# Set up railsgoat (https://github.com/OWASP/railsgoat)
 $nonprivileged_provisioning = <<NONPRIVILEGED_PROV
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 curl -L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=2.4.3
 git clone https://github.com/OWASP/railsgoat.git
 cd railsgoat
