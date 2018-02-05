@@ -2,9 +2,13 @@
 # vi: set ft=ruby :
 
 # Install common tools (git, tmux, curl), and dependency for railsgoat CI/CD lab: libmysqlclient-dev
+# Install Jenkins dependencies + Jenkins
 $privileged_provisioning = <<PRIVILEGED_PROV
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
+echo -n "## Added via Vagrant provisioning for Jenkins LTS releases
+deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
 apt-get update
-apt-get install -y tmux git curl libmysqlclient-dev
+apt-get install -y tmux git curl libmysqlclient-dev jenkins
 PRIVILEGED_PROV
 
 # Set up railsgoat (https://github.com/OWASP/railsgoat)
@@ -42,12 +46,11 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
   # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
   
+  # Forward railsgoat (3000) and Jenkins (8080) web interfaces to the host
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
