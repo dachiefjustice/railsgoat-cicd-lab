@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 
 # Install common tools (git, tmux, curl), and dependency for railsgoat CI/CD lab: libmysqlclient-dev
-# Install Jenkins dependencies + Jenkins
-# Add an /etc/hosts entry to avoid arachni "no scanning on localhost" problem
+# Add Jenkins key, install Jenkins dependencies + Jenkins
+# Add an /etc/hosts entry to work arachni "no scanning on localhost" issue
 $privileged_provisioning = <<PRIVILEGED_PROV
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
 echo "
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "./dataexchange", "/vagrant_data"
+  # config.vm.synced_folder "./dataexchange", "/vagrant_data"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
