@@ -30,3 +30,9 @@ RailsGoat CI-CD Notes
 - Installed jenkins with: sudo apt-get install jenkins (this installed dependencies, including a JDK and JRE)
 - Added a line to the Vagrantfile to autoinstall Jenkins + key under the root provisioner section
 - Added a line to Vagrantfile to forward 8080 (default Jenkins port) to the host
+
+====Arachni Experimentation====
+- Got Arachni installed, download/untar/run
+- Experimenting with web UI, created a new scan profile for railsgoat (login with one of the railsgoat users, session detection, logout exclusion)
+- Discovered that arachni doesn't support scanning localhost -- adding an /etc/hosts entry to avoid this problem (map railsgoat to 127.0.0.1)
+- Got arachni to scan RailsGoat, authenticated, using jim@metacorp.com/alohaowasp, saved this profile, adding it to the git repo for later invocation via CLI
