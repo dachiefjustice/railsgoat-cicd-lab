@@ -3,6 +3,7 @@
 
 # Install common tools (git, tmux, curl), and dependency for railsgoat CI/CD lab: libmysqlclient-dev
 # Install Jenkins dependencies + Jenkins
+# Add an /etc/hosts entry to avoid arachni "no scanning on localhost" problem
 $privileged_provisioning = <<PRIVILEGED_PROV
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
 echo "
@@ -10,6 +11,7 @@ echo "
 deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
 apt-get update
 apt-get install -y tmux git curl libmysqlclient-dev jenkins
+echo "127.0.0.1       railsgoat-lab" >> /etc/hosts
 PRIVILEGED_PROV
 
 # Set up railsgoat (https://github.com/OWASP/railsgoat)
@@ -48,9 +50,10 @@ Vagrant.configure("2") do |config|
   # NOTE: This will enable public access to the opened port
   # config.vm.network "forwarded_port", guest: 80, host: 8080
   
-  # Forward railsgoat (3000) and Jenkins (8080) web interfaces to the host
+  # Forward railsgoat (3000), Jenkins (8080), and arachni (9292) web interfaces to the host
   config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 9292, host: 9292, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -81,6 +84,9 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "4096"
+  end
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
