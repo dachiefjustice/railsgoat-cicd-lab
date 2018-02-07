@@ -38,8 +38,8 @@ chmod +x /usr/local/bin/docker-compose
 echo "127.0.0.1       railsgoat-lab" >> /etc/hosts
 PRIVILEGED_PROV
 
-# Set up railsgoat (https://github.com/OWASP/railsgoat)
-$nonprivileged_provisioning = <<NONPRIVILEGED_PROV
+# Set up railsgoat locally (https://github.com/OWASP/railsgoat)
+$railsgoat_local_provisioning = <<RAILSGOAT_LOCAL_PROV
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 curl -L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=2.4.3
 git clone https://github.com/OWASP/railsgoat.git
@@ -48,7 +48,15 @@ source ~/.rvm/scripts/rvm
 gem install bundler
 bundle install
 rails db:setup
-NONPRIVILEGED_PROV
+RAILSGOAT_LOCAL_PROV
+
+# Set up railsgoat with Docker and Docker Compose, to be run as vagrant user after Docker + Docker Compose setup
+$railsgoat_docker_provisioning = <<RAILSGOAT_DOCKER_PROV
+git clone https://github.com/OWASP/railsgoat.git
+cd railsgoat
+docker-compose build
+docker-compose run web rails db:setup
+RAILSGOAT_DOCKER_PROV
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -122,7 +130,11 @@ Vagrant.configure("2") do |config|
   
   # First do the provisioning with root privs
   config.vm.provision "shell", inline: $privileged_provisioning, privileged: true
-  
-  # Then user-specific provisioning
-  config.vm.provision "shell", inline: $nonprivileged_provisioning, privileged: false
+ 
+  # Workaround: force Vagrant to log out before doing Docker provisioning, so correct user/group perms are applied
+  config.vm.provision "shell",
+	  inline: "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill", privileged: true
+
+  # Then, user-level provisioning to get RailsGoat container set up
+  config.vm.provision "shell", inline: $railsgoat_docker_provisioning, privileged: false
 end
