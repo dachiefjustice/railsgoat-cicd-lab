@@ -1,0 +1,13 @@
+version: '3'
+services:
+  railsgoat-web:
+    build: railsgoat
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./railsgoat:/myapp
+    ports:
+      - "3000:3000"
+  arachni-web:
+    build: arachni
+    ports:
+      - "9292:9292"
