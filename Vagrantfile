@@ -4,13 +4,37 @@
 # Install common tools (git, tmux, curl), and dependency for railsgoat CI/CD lab: libmysqlclient-dev
 # Add Jenkins key, install Jenkins dependencies + Jenkins
 # Add an /etc/hosts entry to work arachni "no scanning on localhost" issue
+# Install Docker + dependencies, add Docker key
 $privileged_provisioning = <<PRIVILEGED_PROV
+# Install common tools, prereqs for later installation, railsgoat dependency
+apt-get install -y tmux git curl apt-transport-https ca-certificates software-properties-common libmysqlclient-dev
+
+# Add keys for Docker and Jenkins repos
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+# Add repos for Jenkins, Docker
 echo "
 ## Added via Vagrant provisioning for Jenkins LTS releases
 deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
+add-apt-repository \
+  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) \
+  stable"
+
+# Install Jenkins and Docker after adding the appropriate repos
 apt-get update
-apt-get install -y tmux git curl libmysqlclient-dev jenkins
+apt-get install -y jenkins docker-ce
+
+# Set Docker up for use without sudo
+groupadd docker
+usermod -aG docker vagrant
+
+# Install Docker Compose -- this installs a specific point-in-time version (not "omnifresh")
+curl -L https://github.com/docker/compose/releases/download/1.19.0-rc3/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# Make a hostfile entry for this machine, arachni no-localhost-scan workaround
 echo "127.0.0.1       railsgoat-lab" >> /etc/hosts
 PRIVILEGED_PROV
 
@@ -96,9 +120,9 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   
-  # First do the provisioning with sudo, to install common utilities
+  # First do the provisioning with root privs
   config.vm.provision "shell", inline: $privileged_provisioning, privileged: true
   
-  # Then user-specific provisioning to get railsgoat set up
+  # Then user-specific provisioning
   config.vm.provision "shell", inline: $nonprivileged_provisioning, privileged: false
 end

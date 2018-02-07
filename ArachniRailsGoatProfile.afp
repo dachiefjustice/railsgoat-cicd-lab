@@ -3,7 +3,7 @@ http:
   user_agent: Arachni/v1.5.1
   request_timeout: 10000
   request_redirect_limit: 5
-  request_concurrency: 20
+  request_concurrency: 10
   request_queue_size: 100
   request_headers: {}
   response_max_size: 500000
