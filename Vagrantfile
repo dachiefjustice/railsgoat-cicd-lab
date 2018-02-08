@@ -2,28 +2,23 @@
 # vi: set ft=ruby :
 
 # Install common tools (git, tmux, curl)
-# Add Jenkins key, install Jenkins dependencies + Jenkins
-# Add Docker key, install Docker + dependencies, set up Docker for use without sudo
+# Set up Docker, Docker Compose, and dependencies
 $privileged_provisioning = <<PRIVILEGED_PROV
 # Install common tools, prereqs for later installation, railsgoat dependency
 apt-get install -y tmux git curl apt-transport-https ca-certificates software-properties-common 
 
-# Add keys for Docker and Jenkins repos
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
+# Add key for Docker repo
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
-# Add repos for Jenkins, Docker
-echo "
-## Added via Vagrant provisioning for Jenkins LTS releases
-deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
+# Add repo for Docker
 add-apt-repository \
   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) \
   stable"
 
-# Install Jenkins and Docker after adding the appropriate repos
+# Install Docker 
 apt-get update
-apt-get install -y jenkins docker-ce
+apt-get install -y docker-ce
 
 # Set Docker up for use without sudo
 groupadd docker
@@ -33,14 +28,6 @@ usermod -aG docker vagrant
 curl -L https://github.com/docker/compose/releases/download/1.19.0-rc3/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 PRIVILEGED_PROV
-
-# Set up railsgoat with Docker and Docker Compose, to be run as vagrant user after Docker + Docker Compose setup
-$railsgoat_docker_provisioning = <<RAILSGOAT_DOCKER_PROV
-git clone https://github.com/OWASP/railsgoat.git
-cd railsgoat
-docker-compose build
-docker-compose run web rails db:setup
-RAILSGOAT_DOCKER_PROV
 
 # Copy the docker-compose lab into ~, and build it
 $docker_compose_provisioning = <<DOCKER_COMPOSE_PROV
