@@ -9,5 +9,11 @@ services:
       - "3000:3000"
   arachni-web:
     build: arachni
+    volumes:
+      - ./arachni:/arachni_vol
     ports:
       - "9292:9292"
+  brakeman:
+    build: brakeman
+    volumes:
+      - ./brakeman:/brakeman_vol
