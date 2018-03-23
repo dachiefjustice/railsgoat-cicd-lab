@@ -1,0 +1,18 @@
+pipeline {
+  agent any
+  
+  stages {
+    stage('build') {
+      steps {
+        sh 'docker build -t brakeman:jenkinsbuilt /home/vagrant/railsgoat-lab/brakeman'
+        sh 'set +e; docker run -v $WORKSPACE:/home/alpine/brakeman_vol brakeman:jenkinsbuilt; if [ "$?" == "3" ]; then exit 0; else exit 1; fi'
+      }
+    }
+  }
+  
+  post {
+    always {
+      archiveArtifacts artifacts: 'railsgoat_brakeman_report.html', fingerprint: true
+    }
+  } 
+}
