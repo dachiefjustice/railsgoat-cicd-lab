@@ -41,10 +41,11 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/xenial64"
 
-  # Forward railsgoat (3000) and arachni (9292) web interfaces to the host
+  # Forward railsgoat (3000), arachni (9292), Jenkins (8080) web interfaces to the host
   # IMPORTANT: for security, only expose RailsGoat (deliberately vulnerable) to the host machine
   config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 9292, host: 9292, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
 
   # Plenty of RAM, arachni + RailsGoat need it
   config.vm.provider "virtualbox" do |vb|
@@ -59,5 +60,5 @@ Vagrant.configure("2") do |config|
 	  inline: "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill", privileged: true
 
   # Prepare the lab environment
-  config.vm.provision "shell", inline: $docker_compose_provisioning, privileged: false
+  #config.vm.provision "shell", inline: $docker_compose_provisioning, privileged: false
 end
