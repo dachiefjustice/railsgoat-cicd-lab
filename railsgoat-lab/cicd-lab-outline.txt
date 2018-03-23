@@ -1,0 +1,15 @@
+What should the experience be?
+- Clone repo, have Vagrant installed
+- vagrant up starts Jenkins container, with jobs/pipelines pre-configured for brakeman and arachni scans of 
+- user first understands the automation, then triggers it
+
+What points to make?
+- Difference in running time between arachni and brakeman
+- false positive filtering
+
+What user interactivity?
+- First understand the automation, then trigger it
+- Trigger standup of railsgoat
+- Trigger brakeman
+- Trigger arachni
+- Gather/analyze tool output
