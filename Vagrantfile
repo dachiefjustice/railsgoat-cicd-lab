@@ -36,6 +36,9 @@ sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sour
 sudo apt-get update
 sudo apt-get install -y jenkins
 
+# Add jenkins user to docker group (assumes group exists)
+usermod -aG docker jenkins
+
 JENKINS_INSTALL
 
 # Copy the docker-compose lab into ~, and build it
