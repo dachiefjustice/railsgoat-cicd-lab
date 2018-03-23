@@ -29,6 +29,15 @@ curl -L https://github.com/docker/compose/releases/download/1.19.0-rc3/docker-co
 chmod +x /usr/local/bin/docker-compose
 PRIVILEGED_PROV
 
+$install_jenkins_in_vm = <<JENKINS_INSTALL
+# From https://jenkins.io/doc/book/installing/#debian-ubuntu
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+
+JENKINS_INSTALL
+
 # Copy the docker-compose lab into ~, and build it
 $docker_compose_provisioning = <<DOCKER_COMPOSE_PROV
 cp -r /vagrant/railsgoat-lab ~
@@ -54,7 +63,10 @@ Vagrant.configure("2") do |config|
 
   # First do the provisioning with root privs
   config.vm.provision "shell", inline: $privileged_provisioning, privileged: true
- 
+  
+  # Install Jenkins with root privs
+  config.vm.provision "shell", inline: $install_jenkins_in_vm, privileged: true
+  
   # Kill SSH connections, forcing Vagrant to relog before Docker provisioning (ensures correct user/group perms)
   config.vm.provision "shell",
 	  inline: "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill", privileged: true
