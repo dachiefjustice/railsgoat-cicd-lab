@@ -52,7 +52,7 @@ DOCKER_COMPOSE_PROV
 #   - Copy railsgoatlab into /home/vagrant
 #   - Configure git with vagrant user info
 #   - Initialize + set up git repos for arachni_jenkins and brakeman_jenkins
-$lab_setup = <<<LAB_SETUP
+$lab_setup = <<LAB_SETUP
 # Copy lab files into homedir
 cp -r /vagrant/railsgoat-lab ~
 
