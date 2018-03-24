@@ -4,8 +4,8 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh 'docker build -t brakeman:jenkinsbuilt /home/vagrant/railsgoat-lab/brakeman'
-        sh 'set +e; docker run -v $WORKSPACE:/home/alpine/brakeman_vol brakeman:jenkinsbuilt; if [ "$?" == "3" ]; then exit 0; else exit 1; fi'
+        sh 'docker build -t brakeman:$BUILD_TAG /home/vagrant/railsgoat-lab/brakeman_jenkins'
+        sh 'set +e; docker run -v $WORKSPACE:/home/alpine/brakeman_vol brakeman:$BUILD_TAG; if [ "$?" == "3" ]; then exit 0; else exit 1; fi'
       }
     }
   }

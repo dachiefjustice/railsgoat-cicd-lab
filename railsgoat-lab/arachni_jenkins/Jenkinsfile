@@ -1,0 +1,20 @@
+pipeline {
+  agent any
+  
+  stages {
+    stage('build') {
+      steps {
+        sh 'docker-compose build'
+        sh 'docker-compose run arachni-scan'
+      }
+    }
+  }
+  
+  post {
+    always {
+      sh 'docker build -t arachni:$BUILD_TAG arachni/'
+      sh 'docker run -v $WORKSPACE/arachni:/arachni_vol arachni:$BUILD_TAG /root/arachni/bin/arachni_reporter /arachni_vol/arachni_railsgoat_report.afr --reporter=html:outfile=/arachni_vol/arachni-railsgoat-quickscan-report.html.zip'
+      archiveArtifacts artifacts: 'arachni/arachni-railsgoat-quickscan-report.html.zip', fingerprint: true
+    }
+  } 
+}

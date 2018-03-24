@@ -3,7 +3,14 @@ Jenkins-izing notes
 =====================
 What should the experience be?
 - Clone repo, have Vagrant installed
-- vagrant up starts Jenkins container, with jobs/pipelines pre-configured for brakeman and arachni scans of 
+- vagrant up:
+  - Installs Docker, Compose, and Jenkins
+  - Copy railsgoat-lab to /home/vagrant
+  - git config for vagrant user
+  - Initialize git repos inside of ~/railsgoat-lab/arachni_jenkins and ~/railsgoat-lab/brakeman_jenkins (for Jenkins jobs)
+  - git add . && git commit inside arachni_jenkins and brakeman_jenkins
+- user sets up Jenkins with community-suggested plugins (multi-pipeline)
+- user sets up Jenkins jobs (brakeman first, arachni second)
 - user first understands the automation, then triggers it
 
 What points to make?
