@@ -29,24 +29,20 @@ curl -L https://github.com/docker/compose/releases/download/1.19.0-rc3/docker-co
 chmod +x /usr/local/bin/docker-compose
 PRIVILEGED_PROV
 
+# Install + configure Jenkins, needs to run as root
 $install_jenkins_in_vm = <<JENKINS_INSTALL
 # From https://jenkins.io/doc/book/installing/#debian-ubuntu
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-sudo apt-get update
-sudo apt-get install -y jenkins
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
+sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+apt-get update
+apt-get install -y jenkins
 
 # Add jenkins user to docker group (assumes group exists)
 usermod -aG docker jenkins
 
+# Bounce jenkins service to apply docker group change
+systemctl restart jenkins.service
 JENKINS_INSTALL
-
-# Copy the docker-compose lab into ~, and build it
-$docker_compose_provisioning = <<DOCKER_COMPOSE_PROV
-cp -r /vagrant/railsgoat-lab ~
-cd ~/railsgoat-lab
-docker-compose build
-DOCKER_COMPOSE_PROV
 
 # Lab setup (to be run as non-privileged vagrant user)
 #   - Copy railsgoatlab into /home/vagrant
@@ -78,10 +74,9 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/xenial64"
 
-  # Forward railsgoat (3000), arachni (9292), Jenkins (8080) web interfaces to the host
+  # Forward railsgoat (3000) and Jenkins (8080) web interfaces to the host
   # IMPORTANT: for security, only expose RailsGoat (deliberately vulnerable) to the host machine
   config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
-  config.vm.network "forwarded_port", guest: 9292, host: 9292, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
 
   # Plenty of RAM, arachni + RailsGoat need it
@@ -95,10 +90,6 @@ Vagrant.configure("2") do |config|
   # Install Jenkins with root privs
   config.vm.provision "shell", inline: $install_jenkins_in_vm, privileged: true
   
-  # Kill SSH connections, forcing Vagrant to relog before Docker provisioning (ensures correct user/group perms)
-  config.vm.provision "shell",
-	  inline: "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill", privileged: true
-
   # Prepare the lab environment
   config.vm.provision "shell", inline: $lab_setup, privileged: false
 end
