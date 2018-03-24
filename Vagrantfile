@@ -100,5 +100,5 @@ Vagrant.configure("2") do |config|
 	  inline: "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill", privileged: true
 
   # Prepare the lab environment
-  #config.vm.provision "shell", inline: $docker_compose_provisioning, privileged: false
+  config.vm.provision "shell", inline: $lab_setup, privileged: false
 end
