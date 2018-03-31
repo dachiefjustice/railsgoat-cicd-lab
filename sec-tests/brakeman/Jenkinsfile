@@ -14,7 +14,7 @@ pipeline {
         sh 'docker build -t brakeman:$BUILD_TAG $WORKSPACE/sec-tests/brakeman'
         
         // Run brakeman against RailsGoat submodule, output results to workspace
-        sh 'set +e; docker run -v $WORKSPACE:/brakeman_vol brakeman:$BUILD_TAG brakeman -a -f html -o /brakeman_vol/railsgoat_brakeman_report.html $WORKSPACE/railsgoat; if [ "$?" -eq "3" ]; then exit 0; else exit 1; fi'
+        sh 'set +e; docker run -v $WORKSPACE:/brakeman_vol brakeman:$BUILD_TAG brakeman -a -f html -o /brakeman_vol/railsgoat_brakeman_report.html /brakeman_vol/railsgoat; if [ "$?" -eq "3" ]; then exit 0; else exit 1; fi'
       }
     }
   }
