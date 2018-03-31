@@ -10,11 +10,17 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        // Build Arachni and RailsGoat containers 
-        sh 'docker-compose build'
+        // Check out source code into the workspace
+        checkout scm
         
-        // Run containerized Arachni against containerized RailsGoat
-        sh 'docker-compose run arachni-scan'
+        // Force submodule update for RailsGoat
+        sh 'git submodule update --init'
+        
+        // Build Arachni and RailsGoat containers 
+        sh 'cd $WORKSPACE/sec-tests/arachni && docker-compose build'
+        
+        // Run containerized Arachni scan against containerized RailsGoat
+        sh 'cd $WORKSPACE/sec-tests/arachni && docker-compose run arachni-scan'
       }
     }
   }
@@ -22,13 +28,13 @@ pipeline {
   post {
     always {
       // Build an Arachni container to convert report to HTML format
-      sh 'docker build -t arachni:$BUILD_TAG arachni/'
+      sh 'docker build -t arachni:$BUILD_TAG $WORKSPACE/sec-tests/arachni/'
       
       // Convert report to zipped HTML
-      sh 'docker run -v $WORKSPACE/arachni:/arachni_vol arachni:$BUILD_TAG /root/arachni/bin/arachni_reporter /arachni_vol/arachni_railsgoat_report.afr --reporter=html:outfile=/arachni_vol/arachni-railsgoat-quickscan-report.html.zip'
+      sh 'docker run -v $WORKSPACE/sec-tests/arachni/arachni:/arachni_vol arachni:$BUILD_TAG arachni_reporter /arachni_vol/arachni_railsgoat_report.afr --reporter=html:outfile=/arachni_vol/arachni-railsgoat-quickscan-report.html.zip'
       
       // Archive the report with the build
-      archiveArtifacts artifacts: 'arachni/arachni-railsgoat-quickscan-report.html.zip', fingerprint: true // Save 
+      archiveArtifacts artifacts: 'sec-tests/arachni/arachni/arachni-railsgoat-quickscan-report.html.zip', fingerprint: true
     }
   } 
 }

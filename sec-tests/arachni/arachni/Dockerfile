@@ -1,22 +1,17 @@
 # Purpose: package Arachni for use in Jenkins pipeline
 
-# Tested on alpine, PhantomJS didn't spawn properl, so using Ubuntu.
-# Possibly musl libc vs glibc related.
+# PhantomJS didn't spawn threads properly on Alpine, so Ubuntu instead.
 FROM ubuntu:latest
 
-# Use /root for Arachni installation
-WORKDIR /root
-
 # Install wget and Arachni
-# arachni will be in /root/arachni
-RUN apt-get update && apt-get install -y wget && \
-    wget https://github.com/Arachni/arachni/releases/download/v1.5.1/arachni-1.5.1-0.5.12-linux-x86_64.tar.gz && \
-    tar xzf arachni-1.5.1-0.5.12-linux-x86_64.tar.gz && \
-    mv arachni-1.5.1-0.5.12 arachni && \
-    mkdir /arachni_vol
+RUN apt-get update && apt-get install --no-install-recommends --yes wget ca-certificates && \
+    wget -O /tmp/arachni.tar.gz https://github.com/Arachni/arachni/releases/download/v1.5.1/arachni-1.5.1-0.5.12-linux-x86_64.tar.gz && \
+    tar xzf /tmp/arachni.tar.gz -C /tmp && \
+    mv /tmp/arachni-1.5.1-0.5.12/ /opt/arachni/ && \
+    rm /tmp/arachni.tar.gz
 
-# /arachni_vol for providing profiles and saving reports
-VOLUME /arachni_vol
+# Add arachni's bin directory to PATH
+ENV PATH="/opt/arachni/bin:${PATH}"
 
 # Interactive shell by default
 CMD ["/bin/bash"]
