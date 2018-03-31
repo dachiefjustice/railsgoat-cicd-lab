@@ -21,7 +21,8 @@ add-apt-repository \
 apt-get update && apt-get install -y docker-ce
 
 # Set Docker up for use without sudo
-groupadd docker && usermod -aG docker vagrant
+groupadd docker
+usermod -aG docker vagrant
 INSTALL_DOCKER
 
 # Privileged Docker Compose install 
@@ -98,5 +99,5 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: $install_configure_jenkins, privileged: true
   
   # Prepare the lab environment
-  config.vm.provision "shell", inline: $lab_setup, privileged: false
+  #config.vm.provision "shell", inline: $lab_setup, privileged: false
 end

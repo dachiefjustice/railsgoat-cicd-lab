@@ -7,8 +7,10 @@ pipeline {
     stage('build') {
       steps {
         // Build the Brakeman container
-        sh 'docker build -t brakeman:$BUILD_TAG /home/vagrant/railsgoat-lab/brakeman_jenkins'
-        sh 'set +e; docker run -v $WORKSPACE:/home/alpine/brakeman_vol brakeman:$BUILD_TAG; if [ "$?" -eq "3" ]; then exit 0; else exit 1; fi'
+        sh 'docker build -t brakeman:$BUILD_TAG /vagrant/sec-tests/brakeman'
+        
+        // Run brakeman against RailsGoat submodule, output results to workspace
+        sh 'set +e; docker run -v $WORKSPACE:/brakeman_vol brakeman:$BUILD_TAG; if [ "$?" -eq "3" ]; then exit 0; else exit 1; fi'
       }
     }
   }

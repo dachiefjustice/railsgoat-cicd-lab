@@ -5,3 +5,6 @@
 - Write README.md
 - Add Rspec tests?
 - Decide on LICENSE and add to repo
+
+
+CMD ["brakeman", "-a", "-f", "html", "-o", "/home/alpine/brakeman_vol/railsgoat_brakeman_report.html"]
