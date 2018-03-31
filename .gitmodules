@@ -1,0 +1,3 @@
+[submodule "railsgoat"]
+	path = railsgoat
+	url = https://github.com/OWASP/railsgoat
