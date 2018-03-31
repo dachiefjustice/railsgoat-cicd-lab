@@ -1,10 +1,19 @@
+/*
+- Jenkinsfile for setting up Arachni + RailsGoat
+- Arachni scans the running RailsGoat over internal Docker network
+- Convert Arachni scan file into zipped HTML report after scanning
+*/
+
 pipeline {
   agent any
   
   stages {
     stage('build') {
       steps {
+        // Build Arachni and RailsGoat containers 
         sh 'docker-compose build'
+        
+        // Run containerized Arachni against containerized RailsGoat
         sh 'docker-compose run arachni-scan'
       }
     }
@@ -12,9 +21,14 @@ pipeline {
   
   post {
     always {
+      // Build an Arachni container to convert report to HTML format
       sh 'docker build -t arachni:$BUILD_TAG arachni/'
+      
+      // Convert report to zipped HTML
       sh 'docker run -v $WORKSPACE/arachni:/arachni_vol arachni:$BUILD_TAG /root/arachni/bin/arachni_reporter /arachni_vol/arachni_railsgoat_report.afr --reporter=html:outfile=/arachni_vol/arachni-railsgoat-quickscan-report.html.zip'
-      archiveArtifacts artifacts: 'arachni/arachni-railsgoat-quickscan-report.html.zip', fingerprint: true
+      
+      // Archive the report with the build
+      archiveArtifacts artifacts: 'arachni/arachni-railsgoat-quickscan-report.html.zip', fingerprint: true // Save 
     }
   } 
 }
