@@ -28,7 +28,8 @@ The lab environment is heavily automated. Key elements:
 ### Initial Setup
 1. On a host meeting the prereqs, clone this repo: `git clone https://github.com/dachiefjustice/railsgoat-lab`
 2. `cd` into the cloned repo, `vagrant up`. Good time to grab a coffee, lots of downloading and installing is about to happen.
-3. Once the Vagrant VM is done setting up, `vagrant ssh` on in. You'll know it's done once the previous `vagrant up` returns to a prompt in your shell.
+3. Once the Vagrant VM is done setting up, `vagrant ssh` in. You'll know it's done once the previous `vagrant up` returns to a prompt in your shell.
+![vagrant ssh](screenhots/02_vagrantssh.png)
 4. Time to set up Jenkins, which is running on port 8080 in the VM and is exposed from the VM to your Vagrant host. Open http://localhost:8080 in a browser on your Vagrant host.
 5. Jenkins sets a random initial password, you'll need this to log in. In the VM `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`, copy/paste into the browser, and move to the next screen.
 6. Install the suggested plugins, the lab makes use of some of them (notably Pipeline and Git).
