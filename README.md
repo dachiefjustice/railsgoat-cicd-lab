@@ -89,7 +89,7 @@ Some of the stuff going on under the hood with the Brakeman test:
 Some of the stuff going on under the hood with the Arachni scan:
 
 - The scan profile (`arachni-railsgoat-quickscan.afp`) used by default uses a small subset of the tests available in Arachni to keep scan times reasonable.
-- The scan profile is tuned to RailsGoat in various ways: login credentials, a pattern to check if the scan engine is currently authenticated or not, and various other tuning parameters.
+- The scan profile is tuned to RailsGoat: login credentials, a pattern to check if the scan engine is currently authenticated or not, and various other tuning parameters.
 - The Arachni `Dockerfile` downloads Arachni over HTTPS and checksums the downloaded package. These are good security practices to validate the integrity of software packages downloaded; don't let yourself get MITM'd!
 - The Arachni `docker-compose.yml` file uses `depends_on`, so the RailsGoat container must be up and running before the Arachni scan starts.
 - The Arachni `docker-compose.yml` file builds the RailsGoat container using a git submodule (hence the relative build path). The `Jenkinsfile` includes a build step to update this repository, too.
@@ -99,7 +99,7 @@ The `Vagrantfile` is well-commented; some of the handy stuff there:
 
 - Add GPG keys for third-party repos before installing packages from them (Docker, Docker Compose)
 - Use of the `docker` group (for the vagrant and jenkins users) to make interacting with the Docker daemon not require `sudo` or `root` privileges
-- Port 3000 and 8080 are forwarded from the Vagrant VM to the Vagrant host, and limited to access by `127.0.0.1` for security (especially important for RailsGoat, since it's intentionally vulnerable).
+- Port 3000 and 8080 are forwarded from the Vagrant VM to the Vagrant host, and access is limited `127.0.0.1` for security (especially important for RailsGoat, since it's intentionally vulnerable).
 
 ## Lab vs. Real-World
 Of course, things are different in this lab environment vs. in a real-world pipeline. Some key differences:
@@ -114,7 +114,7 @@ Of course, things are different in this lab environment vs. in a real-world pipe
 ## Notes & Tips
 - There are lots of moving parts (automatic download/installation from third-party sources) in this lab. Not much version pinning, it's built to stay up-to-date (with the tradeoff that things might break unexpectedly).
 - I've sprinkled explanatory comments throughout the lab's source files.
-- If you hit performance issues or timeouts with the Arachni scan, try increasing the memory allocated to the VM in the `Vagrantfile`:
+- If you hit performance issues or timeouts with the Arachni scan, try either re-running the Jenkins job (I've seen it work after failing the first time with no changes) or increasing the memory allocated to the VM in the `Vagrantfile`:
 ```
 config.vm.provider "virtualbox" do |vb|
   vb.memory = "4096"
