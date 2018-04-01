@@ -1,5 +1,5 @@
 # RailsGoat CI/CD Lab
-This lab is meant for developers/security professionals interested in how to integrate static and dynamic security analysis into a CI/CD pipeline. Hopefully it gives some ideas on how you might automate finding application security defects in your own applications.
+This lab is meant for developers/security professionals interested in learning how to integrate static and dynamic security analysis into a CI/CD pipeline. Hopefully it gives some ideas on how you might automate finding application security defects in your own applications.
 
 The app in this lab is [OWASP RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails app intended for training purposes. Props to the wonderful folks working on that project!
 
