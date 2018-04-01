@@ -8,9 +8,9 @@ services:
     ports:
       - "3000:3000"
   arachni-scan:
-    build: arachni
+    build: .
     command: bash -c "arachni --profile-load-filepath /arachni_vol/arachni-railsgoat-quickscan.afp --report-save-path=/arachni_vol/arachni_railsgoat_report.afr http://railsgoat-web:3000"
     volumes:
-      - ./arachni:/arachni_vol
+      - .:/arachni_vol
     depends_on:
       - railsgoat-web
