@@ -1,5 +1,5 @@
 # RailsGoat CI/CD Lab
-This lab is meant for developers/security professionals interested in how to integrate static and dynamic security analysis into a CI/CD pipeline. Hopefully it gives some ideas on how you might use it to secure your own applications.
+This lab is meant for developers/security professionals interested in how to integrate static and dynamic security analysis into a CI/CD pipeline. Hopefully it gives some ideas on how you might automate finding application security defects in your own applications.
 
 The app in this lab is [OWASP RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails app intended for training purposes. Props to the wonderful folks working on that project!
 
@@ -99,8 +99,8 @@ Of course, things are different in this lab environment vs. in a real-world pipe
 - There are lots of moving parts (automatic download/installation from third-party sources) in this lab. Not much version pinning, it's built to stay up-to-date (with the tradeoff that things might break unexpectedly).
 - I've sprinkled explanatory comments throughout the lab's source files.
 - If you hit performance issues or timeouts with the Arachni scan, try increasing the memory allocated to the VM in the `Vagrantfile`:
-`
+```
 config.vm.provider "virtualbox" do |vb|
   vb.memory = "4096"
 end
-`
+```
