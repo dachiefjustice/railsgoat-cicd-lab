@@ -45,7 +45,7 @@ Now that you've got Jenkins set up, time to analyze the RailsGoat codebase for s
 1. If you're not logged into the Jenkins UI already, do so at http://localhost:8080 in a browser on the Vagrant host.
 2. Create a new job/item in Jenkins. Call it `brakeman` (or something else if you prefer). Make the job a "Multibranch Pipeline" job.
 ![making brakeman job](screenshots/10_brakemanJobCreation.png)
-3. In the job configuration screen, add a Git source repo. By default, Vagrant mounts the project directory (the cloned repo, in this case) from the host to the VM under `/vagrant`. Use that as the source repo for this job.
+3. In the job configuration screen, add a Git source repo. By default, Vagrant mounts the project directory (the cloned repo, in this case) from the host to the VM under `/vagrant`. Use that as the source repo for this job: `file:///vagrant`.
 ![brakeman job add repo](screenshots/11_brakemanAddBranchSource.png)
 ![brakeman job Jenkinsfile path](screenshots/12_brakemanSpecifyJenkinsfilePath.png)
 4. The source repo contains a ready-made Jenkinsfile for scanning RailsGoat using Brakeman. Tell Jenkins about this by changing the `Build Configuration -> Script Path` field to `sec-tests/brakeman/Jenkinsfile`. When you hit the Save button, Jenkins should scan the repo, find the Jenkinsfile, build a container for Brakeman, and kick off the code scan.
