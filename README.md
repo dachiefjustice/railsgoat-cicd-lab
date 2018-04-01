@@ -32,8 +32,12 @@ The lab environment is heavily automated. Key elements:
 ![vagrant ssh](screenshots/02_vagrantssh.png)
 4. Time to set up Jenkins, which is running on port 8080 in the VM and is exposed from the VM to your Vagrant host. Open http://localhost:8080 in a browser on your Vagrant host.
 5. Jenkins sets a random initial password, you'll need this to log in. In the VM `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`, copy/paste into the browser, and move to the next screen.
+![jenkins initial pw](screenshots/04_jenkinsInitialLogin.png)
 6. Install the suggested plugins, the lab makes use of some of them (notably Pipeline and Git).
+![jenkins default plugins](screenshots/05_installSuggestedPlugins.png)
+![jenkins installing plugins](screenshots/06_suggestedPluginsInstalling.png)
 7. Set up an administrative user, using whatever credentials/info you like.
+![jenkins setup admin user](screenshots/07_setUpAdminUser.png)
 8. After setting up a Jenkins admin user, click the "Start using Jenkins" button on the next screen.
 
 ### Static Analysis with Brakeman
