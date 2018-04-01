@@ -47,29 +47,11 @@ systemctl restart jenkins.service
 JENKINS_INSTALL
 
 # Lab setup (to be run as non-privileged vagrant user)
-#   - Copy railsgoatlab into /home/vagrant
-#   - Configure git with vagrant user info
-#   - Initialize + set up git repos for arachni_jenkins and brakeman_jenkins
-$lab_setup = <<LAB_SETUP
-# Copy lab files into homedir
-cp -r /vagrant/railsgoat-lab ~
-
-# Set up git
-git config --global user.name "Vagrant Lab"
-git config --global user.email "vagrantlab@example.com"
-
-# Set up arachni_jenkins
-cd ~/railsgoat-lab/arachni_jenkins
-git init
-git add .
-git commit -m 'Initial auto-commit from Vagrant setup'
-
-# Set up brakeman_jenkins
-cd ~/railsgoat-lab/brakeman_jenkins
-git init
-git add .
-git commit -m 'Initial auto-commit from Vagrant setup'
-LAB_SETUP
+# Make sure the RailsGoat submodule is updated
+$railsgoat_submodule_init = <<RAILSGOAT_SUBMOD_INIT
+cd /vagrant
+git submodule update --init
+RAILSGOAT_SUBMOD_INIT
 
 Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
@@ -98,6 +80,6 @@ Vagrant.configure("2") do |config|
   # Install + configure Jenkins 
   config.vm.provision "shell", inline: $install_configure_jenkins, privileged: true
   
-  # Prepare the lab environment
-  #config.vm.provision "shell", inline: $lab_setup, privileged: false
+  # Update/initialize RailsGoat submodule
+  config.vm.provision "shell", inline: $railsgoat_submodule_init, privileged: false
 end
