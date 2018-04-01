@@ -55,12 +55,12 @@ Now that you've got Jenkins set up, time to analyze the RailsGoat app for securi
 
 The default scan for this lab uses a subset of Arachni's tests to keep scan times reasonable.
 
-### Lab Exercise & Self-Directed Learning
+## Lab Exercise & Self-Directed Learning
 If you're enjoying this lab, here's a exercise for you: [RailsGoat](https://github.com/OWASP/railsgoat/) contains a set of failing Capybara RSpecs. Try making a Jenkins job that will run these and capture the output in the Jenkins build. Change stuff, see what breaks, try and fix it.
 
 You'll get the most out of this lab if you take time to read the `Jenkinsfile`s, `Dockerfile`s, and `docker-compose.yml` files. Figure out how stuff that's new to you works. The [Jenkins docs](https://jenkins.io/doc/), [Docker docs](https://docs.docker.com/), [Brakeman docs](https://brakemanscanner.org/docs/), and [Arachni wiki](https://github.com/Arachni/arachni/wiki) are excellent resources.
 
-### Under the Hood with Brakeman
+## Under the Hood with Brakeman
 Some of the stuff going on under the hood with the Brakeman test:
 
 - Why use Alpine Linux for the Brakeman container? It's lightweight, minimizes attack surface, and results in smaller, faster, and cleaner Docker containers than more full-featured Linux distributions.
@@ -69,7 +69,7 @@ Some of the stuff going on under the hood with the Brakeman test:
 - The RailsGoat project is a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) of this repo, making it easy to pull upstream changes into the lab environment. In fact, the Brakeman Jenkinsfile does this as part of the build.
 - Brakeman returns an exit status of 3 after successfully scanning the RailsGoat code. Jenkins assumes any non-zero exit code from a build step indicates a failed build, so there's extra logic to avoid this problem in the Brakeman Jenkinsfile.
 
-### Under the Hood with Arachni
+## Under the Hood with Arachni
 Some of the stuff going on under the hood with the Arachni scan:
 
 - The scan profile (`arachni-railsgoat-quickscan.afp`) used by default uses a small subset of the tests available in Arachni to keep scan times reasonable.
@@ -78,7 +78,7 @@ Some of the stuff going on under the hood with the Arachni scan:
 - The Arachni `docker-compose.yml` file uses `depends_on`, so the RailsGoat container must be up and running before the Arachni scan starts.
 - The Arachni `docker-compose.yml` file builds the RailsGoat container using a git submodule (hence the relative build path). The `Jenkinsfile` includes a build step to update this repository, too.
 
-### Under the Hood with Vagrant
+## Under the Hood with Vagrant
 The `Vagrantfile` is well-commented; some of the handy stuff there:
 
 - Add GPG keys for third-party repos before installing packages from them (Docker, Docker Compose)
