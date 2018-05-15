@@ -3,7 +3,7 @@
 
 # Privileged common tools, lab component prereq installation
 $install_prereqs = <<INSTALL_TOOL_PREREQS
-apt-get update && apt-get install -y tmux git curl apt-transport-https ca-certificates software-properties-common 
+apt-get update && apt-get install -y tmux git curl apt-transport-https ca-certificates software-properties-common default-jre-headless
 INSTALL_TOOL_PREREQS
 
 # Privileged Docker CE installation
