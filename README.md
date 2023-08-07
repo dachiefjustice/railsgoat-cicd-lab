@@ -26,7 +26,7 @@ The lab environment is heavily automated. Key elements:
 
 ## Lab Walkthrough
 ### Initial Setup
-1. On a host meeting the prereqs, clone this repo: `git clone https://github.com/dachiefjustice/railsgoat-lab`
+1. On a host meeting the prereqs, clone this repo: `git clone https://github.com/dachiefjustice/railsgoat-cicd-lab.git`
 2. `cd` into the cloned repo, `vagrant up`. Good time to grab a coffee, lots of downloading and installing is about to happen.
 3. Once the Vagrant VM is done setting up, `vagrant ssh` in. You'll know it's done once the previous `vagrant up` returns to a prompt in your shell.
 ![vagrant ssh](screenshots/02_vagrantssh.png)
