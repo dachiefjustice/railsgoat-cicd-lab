@@ -13,9 +13,6 @@ pipeline {
         // Check out source code into the workspace
         checkout scm
         
-        // Force submodule update for RailsGoat
-        sh 'git submodule update --init'
-        
         // Build Arachni and RailsGoat containers 
         sh 'cd $WORKSPACE/sec-tests/arachni && docker-compose build'
         

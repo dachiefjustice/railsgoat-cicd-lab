@@ -10,9 +10,6 @@ pipeline {
         // Check out source code into the workspace
         checkout scm
         
-        // Force submodule update for RailsGoat
-        sh 'git submodule update --init'
-        
         // Build the Brakeman container
         sh 'docker build -t brakeman:$BUILD_TAG $WORKSPACE/sec-tests/brakeman'
         
