@@ -4,6 +4,11 @@
 - Updated VM hostname
 
 # Problems discovered
+## Railsgoat submodule not updating
+Automation in various parts of the project updates the railsgoat submodule, but wasn't pulling the latest changes.
+
+Resolved with: `git submodule update --init --recursive --remote`
+
 ## Git-SCM local repo scanning disabled
 The Git SCM plugin started disabling `file://` repos for security reasons.
 
