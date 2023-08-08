@@ -1,0 +1,52 @@
+---
+# This playbook sets up the RailsGoat CI/CD lab environment
+
+- name: Install lab prereqs
+  hosts: all
+  roles:
+    - railsgoat-lab-prereqs
+
+- name: Install and configure Docker and Docker Compose
+  hosts: all
+  become: true
+  roles:
+    - geerlingguy.docker
+  vars:
+    - docker_edition: 'ce'
+    - docker_install_compose_plugin: true
+    - docker_compose_package: "docker-compose-plugin"
+    - docker_compose_package_state: "present"
+    - docker_users: ["vagrant", "jenkins"]
+
+- name: Install and configure Jenkins
+  hosts: all
+  become: true
+  roles:
+    - geerlingguy.jenkins
+  vars:
+    - jenkins_hostname: localhost
+    - jenkins_prefer_lts: true
+
+    # Jenkins updated signing keys in 2023, role not yet updated
+    # https://github.com/geerlingguy/ansible-role-jenkins/issues/378#issuecomment-1495705651
+    - jenkins_repo_key_url: "https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key"
+    - jenkins_repo_url: "deb [signed-by=/etc/apt/trusted.gpg.d/jenkins.asc] https://pkg.jenkins.io/debian binary/"
+
+    # Allow local checkout for file://vagrant to work for the lab
+    - jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true"
+    
+    # Jenkins admin credentials
+    - jenkins_admin_username: admin
+    - jenkins_admin_password: admin
+  vars_files:
+    # Install plugins needed for the lab
+    - vars/jenkins-plugins.yml
+
+- name: Restart Jenkins
+  hosts: all
+  become: true
+  tasks:
+    - name: Restart Jenkins
+      service:
+        name: jenkins.service
+        state: restarted

@@ -1,0 +1,13 @@
+---
+- name: Install RailsGoat lab prereqs
+  become: true
+  apt:
+    state: present
+    pkg:
+      - tmux
+      - git
+      - curl
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+      - default-jre-headless
