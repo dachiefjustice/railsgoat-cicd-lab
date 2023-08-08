@@ -1,8 +1,3 @@
-# Changes made
-- Updated base box to Ubuntu 22.04
-- Updated Jenkins version to latest stable version
-- Updated VM hostname
-
 # Problems discovered
 ## Railsgoat submodule not updating
 Automation in various parts of the project updates the railsgoat submodule, but wasn't pulling the latest changes.
@@ -25,14 +20,24 @@ Environment="JAVA_OPTS=-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true"
 sudo systemctl restart jenkins.service
 ```
 
-## Arachi scan is failing
+## Arachni scan is failing
 ```sh
 docker run -v /var/lib/jenkins/workspace/arachni_master/sec-tests/arachni:/arachni_vol arachni:jenkins-arachni-master-2 arachni_reporter /arachni_vol/arachni_railsgoat_report.afr --reporter=html:outfile=/arachni_vol/arachni-railsgoat-quickscan-report.html.zip
 ```
 "Report does not exist: /arachni_vol/arachni_railsgoat_report.afr"
 
-# Improvement Ideas
-- Update provisioning to use ansible-local
-- Update docker-compose to latest
-- Update arachni to latest
-- Re-take screenshots
+# TODOs
+[x] Update base box to latest Ubuntu LTS
+[x] Update to latest stable Jenkins
+[x] Update VM hostnamed
+[x] Update provisioning to use Ansible
+[x] Allow using `file://` in Jenkins jobs
+[x] Update docker-compose to latest
+[x] Update arachni to latest
+[ ] Fix Arachni scan
+[ ] Re-test lab instructions
+[ ] Re-take screenshots
+
+# Future ideas
+[ ] Add Nuclei job
+[ ] Add Semgrep job
