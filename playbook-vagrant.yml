@@ -25,7 +25,6 @@
     - geerlingguy.jenkins
   vars:
     - jenkins_hostname: localhost
-    - jenkins_prefer_lts: true
 
     # Jenkins updated signing keys in 2023, role not yet updated
     # https://github.com/geerlingguy/ansible-role-jenkins/issues/378#issuecomment-1495705651
