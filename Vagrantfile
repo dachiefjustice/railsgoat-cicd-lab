@@ -47,7 +47,7 @@ JENKINS_INSTALL
 # Ensures the RailsGoat submodule is updated
 $railsgoat_submodule_init = <<RAILSGOAT_SUBMOD_INIT
 cd /vagrant
-git submodule update --init
+git submodule update --init --recursive --remote
 RAILSGOAT_SUBMOD_INIT
 
 Vagrant.configure("2") do |config|
