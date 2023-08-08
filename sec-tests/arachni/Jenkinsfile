@@ -14,10 +14,10 @@ pipeline {
         checkout scm
         
         // Build Arachni and RailsGoat containers 
-        sh 'docker-compose build --file $WORKSPACE/sec-tests/arachni/compose.yaml'
+        sh 'docker-compose -f $WORKSPACE/sec-tests/arachni/compose.yaml build'
         
         // Run Arachni scan against RailsGoat
-        sh 'docker-compose run --file $WORKSPACE/sec-tests/arachni/compose.yaml arachni-scan'
+        sh 'docker-compose -f $WORKSPACE/sec-tests/arachni/compose.yaml run arachni-scan'
       }
     }
   }
