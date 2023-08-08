@@ -18,20 +18,13 @@ add-apt-repository \
   $(lsb_release -cs) \
   stable"
 
-# Install Docker 
-apt-get update && apt-get install -y docker-ce
+# Install Docker + Docker-Compose
+apt-get update && apt-get install -y docker-ce docker-compose-plugin
 
 # Set Docker up for use without sudo
 groupadd docker
 usermod -aG docker vagrant
 INSTALL_DOCKER
-
-# Install Docker Compose 
-$install_docker_compose = <<INSTALL_DOCKER_COMPOSE
-# Install Docker Compose -- this installs a specific version (not the latest) 
-curl -L https://github.com/docker/compose/releases/download/1.20.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-INSTALL_DOCKER_COMPOSE
 
 # Install + configure Jenkins
 $install_configure_jenkins = <<JENKINS_INSTALL
@@ -79,11 +72,8 @@ Vagrant.configure("2") do |config|
   # Install prereqs
   config.vm.provision "shell", inline: $install_prereqs, privileged: true
   
-  # Install + configure Docker
+  # Install + configure Docker, Docker-Compose
   config.vm.provision "shell", inline: $install_configure_docker, privileged: true
-
-  # Install Docker Compose
-  config.vm.provision "shell", inline: $install_docker_compose, privileged: true
 
   # Install + configure Jenkins 
   config.vm.provision "shell", inline: $install_configure_jenkins, privileged: true
