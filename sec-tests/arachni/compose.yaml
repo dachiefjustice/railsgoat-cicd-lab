@@ -1,4 +1,3 @@
-version: '3'
 services:
   railsgoat-web:
     build: ../../railsgoat
@@ -9,8 +8,9 @@ services:
       - "3000:3000"
   arachni-scan:
     build: .
-    command: bash -c "arachni --profile-load-filepath /arachni_vol/arachni-railsgoat-quickscan.afp --report-save-path=/arachni_vol/arachni_railsgoat_report.afr http://railsgoat-web:3000"
+    command: bash -c "arachni --profile-load-filepath /arachni-railsgoat-quickscan.afp --report-save-path=/workspace/arachni_railsgoat_report.afr http://railsgoat-web:3000"
     volumes:
-      - .:/arachni_vol
+      - .:/workspace # current directory is Jenkins workspace when invoked from pipeline
+      - ./arachni-railsgoat-quickscan.afp:/arachni-railsgoat-quickscan.afp
     depends_on:
       - railsgoat-web

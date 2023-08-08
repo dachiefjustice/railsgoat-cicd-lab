@@ -1,28 +1,27 @@
 # RailsGoat CI/CD Lab
-This lab is meant for developers/security professionals interested in learning how to integrate static and dynamic security analysis into a CI/CD pipeline. Hopefully it gives some ideas on how you might automate finding application security defects in your own applications.
+This lab teaches developers and security people how to integrate static analysis (SAST) and dynamic analysis (DAST) into a CI/CD pipeline. Hopefully it gives some ideas on how you might automate security issue discovery in your own pipelines!
 
-The app in this lab is [OWASP RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails app intended for training purposes. Props to the wonderful folks working on that project!
+This lab uses [OWASP RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails app intended for training. Props to the wonderful folks working on that project!
 
 ## Prerequisites
-- Vagrant
-- Vagrant-compatible hypervisor (built & tested with VirtualBox on Windows 10)
-- 64-bit versions of the above
+- Vagrant and a compatible hypervisor (tested with Virtualbox on Linux and Windows)
 - A browser on your Vagrant host machine
-- This repo available locally on your Vagrant host machine
-- Bandwidth, patience, and perhaps some coffee
+- This repo cloned to your Vagrant host
+- Bandwidth for the lab's automation
 
 ## Components
 The lab environment is heavily automated. Key elements:
 - RailsGoat (the app this lab is based around)
-- Vagrant (VM setup & tool installation)
-- Jenkins (manage builds/tests of RailsGoat)
+- Vagrant and Virtualbox (VM setup)
+- Ansible (environment provisioning)
+- Jenkins (manage RailsGoat builds and tests)
 - Git (moving tools and code around)
-- Docker (automate various tasks in the pipeline)
-- Docker Compose (automate dynamic security scan with Arachni)
-- Brakeman (for static analysis of the RailsGoat code)
-- Arachni (for dynamic analysis of a running instance of RailsGoat)
-- Alpine Linux (for the Brakeman container)
-- Ubuntu Linux (for the Vagrant VM, and the Arachni container) 
+- Docker (automate pipeline tasks)
+- Docker Compose (run RailsGoat, scan it with Arachni)
+- Brakeman (static analysis of the RailsGoat code)
+- Arachni (dynamic analysis of RailsGoat)
+- Alpine Linux (Brakeman container)
+- Ubuntu Linux (main VM, Arachni container)
 
 ## Lab Walkthrough
 ### Initial Setup
