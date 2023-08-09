@@ -23,7 +23,7 @@ Now jump to the [lab walkthrough](lab-walkthrough.md).
 
 ## Tech Stack
 The lab environment is heavily automated. Key elements:
-- RailsGoat (the app this lab is based around)
+- [OWASP RailsGoat](https://github.com/OWASP/railsgoat/), (the app this lab is based around)
 - Vagrant, Virtualbox, and Ansible (environment provisioning)
 - Jenkins (manage RailsGoat builds and tests)
 - Git (moving tools and code around)
