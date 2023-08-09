@@ -9,7 +9,16 @@ pipeline {
     stage('build') {
       steps {
         // Check out source code into the workspace
-        checkout scm
+        // checkout scm
+        checkout scmGit(
+          branches: [[name: '*/master']],
+          extensions:
+            [submodule(recursiveSubmodules: true, reference: '')],
+            userRemoteConfigs: [[url: 'file:///vagrant']]
+        )
+
+        // Initialize RailsGoat submodule
+
         
         // Build RailsGoat container 
         // sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml build'
