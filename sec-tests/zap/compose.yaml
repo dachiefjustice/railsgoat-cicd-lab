@@ -9,6 +9,8 @@ services:
       - ../../railsgoat:/myapp
     ports:
       - "3000:3000"
+    environment:
+      - COMPOSE_SERVICE_NAME=railsgoat-web  # https://danielabaron.me/blog/rails-blocked-host-docker-fix/
   zap-scan-initializer: # solve docker compose volume perms issue: https://github.com/zaproxy/zaproxy/issues/6993
     image: alpine
     volumes:
