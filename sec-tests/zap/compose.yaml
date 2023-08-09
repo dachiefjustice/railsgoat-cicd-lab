@@ -12,6 +12,6 @@ services:
     command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
     # command: ["tail", "-f", "/dev/null"]
     volumes:
-      - .:/zap/wrk/:rw
+      - ../..:/zap/wrk/:rw
     depends_on:
       - railsgoat-web
