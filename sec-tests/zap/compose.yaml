@@ -9,8 +9,8 @@ services:
       - "3000:3000"
   zap-scan:
     image: owasp/zap2docker-stable
-    command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
-    # command: ["tail", "-f", "/dev/null"]
+    # command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
+    command: ["tail", "-f", "/dev/null"]
     volumes:
       - ../..:/zap/wrk/:rw
     depends_on:
