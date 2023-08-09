@@ -16,10 +16,11 @@ Make sure you've got:
 Then:
 ```sh
 git clone https://github.com/dachiefjustice/railsgoat-cicd-lab.git
+cd railsgoat-cicd-lab
 vagrant up
 ```
 
-Now jump to the [lab walkthrough](docs/lab-walkthrough.md).
+This will download and install the necessary components for the lab. Once `vagrant up` is done, jump to the [lab walkthrough](docs/lab-walkthrough.md).
 
 ## Tech Stack
 The lab environment is heavily automated. Key elements:
