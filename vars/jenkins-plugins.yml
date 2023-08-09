@@ -1,10 +1,7 @@
 ---
-# This list was created by installing the suggested plugins, exporting them from the Jenkins script console
-# https://stackoverflow.com/a/35292719, and adding a few custom plugins.
-
 jenkins_plugins_install_dependencies: true
 jenkins_plugins:
-  # Suggested plugins
+  # Jenkins suggested plugins (obtained via https://stackoverflow.com/a/35292719)
   - ssh-credentials
   - workflow-api
   - workflow-basic-steps
@@ -86,6 +83,3 @@ jenkins_plugins:
   - github-api
   - github
   - github-branch-source
-
-  # Custom plugins
-  - docker-compose-build-step
