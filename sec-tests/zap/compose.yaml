@@ -22,9 +22,25 @@ services:
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
+  zap-scan-full:
+    image: owasp/zap2docker-stable
+    command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
+    volumes:
+      - zap-reports:/zap/wrk/:rw
+    depends_on:
+      - railsgoat-web
+      - zap-scan-initializer
   zap-copy-report-to-workspace:
     image: alpine
     volumes:
       - zap-reports:/zap-reports
       - ../..:/workspace
     command: /bin/sh -c "cp /zap-reports/railsgoat-zap-baseline.html /workspace/railsgoat-zap-baseline.html"
+  zap-holdopen-with-railsgoat:
+    image: owasp/zap2docker-stable
+    command: tail -f /dev/null
+    volumes:
+      - zap-reports:/zap/wrk/:rw
+    depends_on:
+      - railsgoat-web
+      - zap-scan-initializer

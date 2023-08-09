@@ -17,8 +17,10 @@ pipeline {
         )
         
         // Run baseline ZAP scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-baseline'
-        
+        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-baseline'
+
+        // Hold ZAP and RailsGoat open together
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-holdopen-with-railsgoat'
       }
     }
   }
