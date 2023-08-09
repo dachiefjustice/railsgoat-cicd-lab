@@ -29,6 +29,3 @@ services:
       - zap-reports:/zap-reports
       - ../..:/workspace
     command: /bin/sh -c "cp /zap-reports/railsgoat-zap-baseline.html /workspace/railsgoat-zap-baseline.html"
-    depends_on:
-      zap-scan:
-        condition: service_completed_successfully
