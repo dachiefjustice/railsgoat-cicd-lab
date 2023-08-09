@@ -8,25 +8,17 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        // Check out source code into the workspace
-        // checkout scm
+        // Check out source code into the workspace, initializing RailsGoat submodule
         checkout scmGit(
           branches: [[name: '*/master']],
           extensions:
             [submodule(recursiveSubmodules: true, reference: '')],
             userRemoteConfigs: [[url: 'file:///vagrant']]
         )
-
-        // Initialize RailsGoat submodule
-
-        
-        // Build RailsGoat container 
-        // sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml build'
-        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
         
         // Run baseline ZAP scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up --build zap-scan-baseline'
-        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose run zap-scan'
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-baseline'
+        
       }
     }
   }
