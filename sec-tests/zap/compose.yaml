@@ -37,7 +37,7 @@ services:
     volumes:
       - zap-reports:/zap-reports
       - ../..:/workspace
-    command: /bin/sh -c "cp /zap-reports/railsgoat-zap-baseline.html /workspace/railsgoat-zap-baseline.html"
+    command: /bin/sh -c "cp /zap-reports/*.html /workspace"
   zap-holdopen-with-railsgoat:
     image: owasp/zap2docker-stable
     command: tail -f /dev/null
