@@ -13,11 +13,11 @@ pipeline {
         
         // Build RailsGoat container 
         // sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml build'
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
+        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
         
         // Run ZAP scan against RailsGoat
-        // sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml run zap-scan'
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose run zap-scan'
+        sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml run zap-scan'
+        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose run zap-scan'
       }
     }
   }
