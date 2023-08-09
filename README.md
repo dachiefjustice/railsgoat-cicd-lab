@@ -24,8 +24,7 @@ Now jump to the [lab walkthrough](lab-walkthrough.md).
 ## Tech Stack
 The lab environment is heavily automated. Key elements:
 - RailsGoat (the app this lab is based around)
-- Vagrant and Virtualbox (VM setup)
-- Ansible (environment provisioning)
+- Vagrant, Virtualbox, and Ansible (environment provisioning)
 - Jenkins (manage RailsGoat builds and tests)
 - Git (moving tools and code around)
 - Docker + Docker Compose (automate pipeline tasks)
