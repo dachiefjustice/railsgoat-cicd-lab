@@ -1,0 +1,29 @@
+/*
+- Jenkinsfile for scanning RailsGoat via OWASP ZAP
+*/
+
+pipeline {
+  agent any
+  
+  stages {
+    stage('build') {
+      steps {
+        // Check out source code into the workspace
+        checkout scm
+        
+        // Build Arachni and RailsGoat containers 
+        sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml build'
+        
+        // Run Arachni scan against RailsGoat
+        sh 'docker-compose -f $WORKSPACE/sec-tests/zap/compose.yaml run zap-scan'
+      }
+    }
+  }
+  
+  post {
+    always {
+      // Archive the report with the build
+      archiveArtifacts artifacts: 'sec-tests/zap/railsgoat-zap-baseline.html', fingerprint: true
+    }
+  } 
+}
