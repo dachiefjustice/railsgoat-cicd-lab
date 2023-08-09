@@ -15,6 +15,9 @@ pipeline {
             [submodule(recursiveSubmodules: true, reference: '')],
             userRemoteConfigs: [[url: 'file:///vagrant']]
         )
+
+        // Build required containers
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
         
         // Run baseline ZAP scan against RailsGoat
         // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-baseline'
