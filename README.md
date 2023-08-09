@@ -19,7 +19,7 @@ git clone https://github.com/dachiefjustice/railsgoat-cicd-lab.git
 vagrant up
 ```
 
-Now jump to the [lab walkthrough](lab-walkthrough.md).
+Now jump to the [lab walkthrough](docs/lab-walkthrough.md).
 
 ## Tech Stack
 The lab environment is heavily automated. Key elements:
