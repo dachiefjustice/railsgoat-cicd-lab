@@ -23,7 +23,7 @@ services:
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
-  zap-copy-result-to-workspace:
+  zap-copy-report-to-workspace:
     image: alpine
     volumes:
       - zap-reports:/zap-reports

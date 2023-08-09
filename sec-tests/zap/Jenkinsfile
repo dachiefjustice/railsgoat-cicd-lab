@@ -25,7 +25,7 @@ pipeline {
         // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
         
         // Run ZAP scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up --build zap-scan'
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up --build zap-copy-report-to-workspace'
         // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose run zap-scan'
       }
     }
