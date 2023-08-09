@@ -31,5 +31,5 @@ Vagrant.configure("2") do |config|
   end
   
   # Update/initialize RailsGoat submodule
-  config.vm.provision "shell", inline: $railsgoat_submodule_init, privileged: false
+  # config.vm.provision "shell", inline: $railsgoat_submodule_init, privileged: false
 end
