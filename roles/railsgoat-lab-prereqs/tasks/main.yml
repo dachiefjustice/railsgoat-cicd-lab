@@ -11,3 +11,9 @@
       - ca-certificates
       - software-properties-common
       - default-jre-headless
+
+- name: Allow file:// URLs with git (used in the lab for using repo via vagrant://)
+  become: true
+  template:
+    src: templates/gitconfig
+    dest: /etc/gitconfig

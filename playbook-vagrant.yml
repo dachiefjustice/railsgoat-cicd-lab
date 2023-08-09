@@ -1,7 +1,7 @@
 ---
 # This playbook sets up the RailsGoat CI/CD lab environment
 
-- name: Install lab prereqs
+- name: Set up lab prereqs
   hosts: all
   roles:
     - railsgoat-lab-prereqs
