@@ -14,7 +14,7 @@ services:
     volumes:
       - zap-reports:/zap-reports
     command: /bin/sh -c "chown 1000:1000 /zap-reports"
-  zap-scan:
+  zap-scan-baseline:
     image: owasp/zap2docker-stable
     command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
     volumes:
