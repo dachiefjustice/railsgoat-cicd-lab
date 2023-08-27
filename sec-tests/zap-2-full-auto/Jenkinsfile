@@ -1,0 +1,45 @@
+/*
+- Jenkinsfile for scanning RailsGoat via OWASP ZAP
+*/
+
+pipeline {
+  agent any
+  
+  stages {
+    stage('build') {
+      steps {
+        // Check out source code into the workspace, initializing RailsGoat submodule
+        checkout scmGit(
+          branches: [[name: '*/master']],
+          extensions:
+            [submodule(recursiveSubmodules: true, reference: '')],
+            userRemoteConfigs: [[url: 'file:///vagrant']]
+        )
+
+        // Build required containers
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
+      }
+    }
+
+    stage('test') {
+      steps {
+        // (Testing) Run full ZAP scan against RailsGoat
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-full=auto'
+      }
+    }
+  }
+  
+  post {
+    always {
+      // Copy the report from Docker volume to the workspace
+      sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-copy-report-to-workspace'
+
+      // Archive reports with the build
+      // archiveArtifacts artifacts: 'railsgoat-zap-baseline.html', fingerprint: true
+      archiveArtifacts artifacts: 'railsgoat-zap-full-auto.html', fingerprint: true
+
+      // Stop running containers
+      sh 'cd $WORKSPACE/sec-tests/zap && docker-compose stop'
+    }
+  } 
+}
