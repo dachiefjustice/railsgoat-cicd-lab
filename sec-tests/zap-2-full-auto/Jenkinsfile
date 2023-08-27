@@ -24,7 +24,7 @@ pipeline {
     stage('test') {
       steps {
         // (Testing) Run full ZAP scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-full=auto'
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-full-auto'
       }
     }
   }
