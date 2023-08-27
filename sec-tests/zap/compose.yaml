@@ -26,7 +26,7 @@ services:
       - zap-scan-initializer
   zap-scan-full:
     image: ghcr.io/zaproxy/zaproxy:stable
-    command: bash -c "zap-full-scan.py -t http://railsgoat-web:3000 -r railsgoat-zap-full.html -n /zap/railsgoat.context"
+    command: bash -c "zap-full-scan.py -t http://railsgoat-web:3000 -r railsgoat-zap-full.html -n /zap/railsgoat.context -U ken"
     volumes:
       - zap-reports:/zap/wrk/:rw
       - ./railsgoat.context:/zap/railsgoat.context:ro
