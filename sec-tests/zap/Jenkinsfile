@@ -18,12 +18,19 @@ pipeline {
 
         // Build required containers
         sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
-        
-        // Run baseline ZAP scan against RailsGoat
-        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-baseline'
+      }
+    }
 
-        // Testing authenticated scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-authenticated'
+    stage('test') {
+      steps {
+        // Run baseline ZAP scan against RailsGoat
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-baseline'
+
+        // (Testing) Run full ZAP scan against RailsGoat
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-full'
+
+        // (Testing) Run automation framework scan against RailsGoat
+        // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-scan-automation-framework'
 
         // Hold ZAP and RailsGoat open together
         // sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-holdopen-with-railsgoat'

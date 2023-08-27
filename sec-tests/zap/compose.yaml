@@ -24,7 +24,16 @@ services:
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
-  zap-scan-authenticated:
+  zap-scan-full:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    command: bash -c "zap-full-scan.py -t http://railsgoat-web:3000 -r railsgoat-zap-full.html -n /zap/railsgoat.context"
+    volumes:
+      - zap-reports:/zap/wrk/:rw
+      - ./railsgoat.context:/zap/railsgoat.context:ro
+    depends_on:
+      - railsgoat-web
+      - zap-scan-initializer
+  zap-scan-automation-framework:
     image: ghcr.io/zaproxy/zaproxy:stable
     command: bash -c "zap.sh -daemon -autorun /zap/zap-railsgoat.yml"
     volumes:
