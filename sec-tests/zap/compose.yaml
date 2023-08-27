@@ -17,18 +17,19 @@ services:
       - zap-reports:/zap-reports
     command: /bin/sh -c "chown 1000:1000 /zap-reports"
   zap-scan-baseline:
-    image: owasp/zap2docker-stable
+    image: ghcr.io/zaproxy/zaproxy:stable
     command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
     volumes:
       - zap-reports:/zap/wrk/:rw
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
-  zap-scan-full:
-    image: owasp/zap2docker-stable
-    command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
+  zap-scan-authenticated:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    command: bash -c "zap.sh -daemon -autorun /zap/zap-railsgoat.yml"
     volumes:
       - zap-reports:/zap/wrk/:rw
+      - ./zap-railsgoat.yml:/zap/zap-railsgoat.yml:ro
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
@@ -37,9 +38,9 @@ services:
     volumes:
       - zap-reports:/zap-reports
       - ../..:/workspace
-    command: /bin/sh -c "cp /zap-reports/*.html /workspace"
+    command: /bin/sh -c "cp /zap-reports/* /workspace"
   zap-holdopen-with-railsgoat:
-    image: owasp/zap2docker-stable
+    image: ghcr.io/zaproxy/zaproxy:stable
     command: tail -f /dev/null
     volumes:
       - zap-reports:/zap/wrk/:rw
