@@ -45,7 +45,7 @@ pipeline {
 
       // Archive reports with the build
       // archiveArtifacts artifacts: 'railsgoat-zap-baseline.html', fingerprint: true
-      archiveArtifacts artifacts: 'railsgoat-zap-authenticated.html', fingerprint: true
+      archiveArtifacts artifacts: 'railsgoat-zap-full.html', fingerprint: true
 
       // Stop running containers
       sh 'cd $WORKSPACE/sec-tests/zap && docker-compose stop'
