@@ -29,6 +29,4 @@ services:
     volumes:
       - zap-reports:/zap-reports
       - ../..:/workspace
-    command: >
-      sh -c "mkdir /workspace/zap-reports &&
-             cp -r /zap-reports/* /workspace/zap-reports"
+    command: /bin/sh -c "cp -r /zap-reports/* /workspace"
