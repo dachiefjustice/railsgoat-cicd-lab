@@ -1,0 +1,38 @@
+/*
+- Jenkinsfile for holding RailsGoat and ZAP open together (for one-off commands)
+*/
+
+pipeline {
+  agent any
+  
+  stages {
+    stage('build') {
+      steps {
+        // Check out source code into the workspace, initializing RailsGoat submodule
+        checkout scmGit(
+          branches: [[name: '*/master']],
+          extensions:
+            [submodule(recursiveSubmodules: true, reference: '')],
+            userRemoteConfigs: [[url: 'file:///vagrant']]
+        )
+
+        // Build required containers
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose build'
+      }
+    }
+
+    stage('test') {
+      steps {
+        // Hold ZAP and RailsGoat open together
+        sh 'cd $WORKSPACE/sec-tests/zap && docker-compose up zap-holdopen-with-railsgoat'
+      }
+    }
+  }
+  
+  post {
+    always {
+      // Stop running containers
+      sh 'cd $WORKSPACE/sec-tests/zap && docker-compose stop'
+    }
+  } 
+}
