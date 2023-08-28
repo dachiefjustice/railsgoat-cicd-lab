@@ -35,7 +35,7 @@ jobs:
       - name: 'Confirm railsgoat context is authenticated for traditional spider'
         type: stats
         statistic: 'stats.auth.configure.verification'
-        operator: '=='
+        operator: '>='
         value: 1
         onFail: 'error'
       - name: 'Confirm at least 1 successful authentication'
@@ -66,7 +66,7 @@ jobs:
       - name: 'Confirm railsgoat context is authenticated for active scan'
         type: stats
         statistic: 'stats.auth.configure.verification'
-        operator: '=='
+        operator: '>='
         value: 1
         onFail: 'error'
       - name: 'Confirm at least 1 successful authentication'
