@@ -6,6 +6,11 @@ pipeline {
   agent any
   
   stages {
+    stage('clean') {
+      // Clean workspace
+      cleanWs()
+    }
+
     stage('build') {
       steps {
         // Check out source code into the workspace, initializing RailsGoat submodule
@@ -37,8 +42,8 @@ pipeline {
       // Archive report with the build
       archiveArtifacts artifacts: 'RailsGoatScanReport.zip'
 
-      // Stop running containers
-      sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose stop'
+      // Clean up containers (remove containers and volumes)
+      sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose down --volumes'
     }
   } 
 }
