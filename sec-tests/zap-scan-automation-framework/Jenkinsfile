@@ -7,8 +7,10 @@ pipeline {
   
   stages {
     stage('clean') {
-      // Clean workspace
-      cleanWs()
+      steps {
+        // Clean workspace
+        cleanWs()
+      }
     }
 
     stage('build') {
