@@ -31,5 +31,5 @@ services:
       - zap-reports:/zap-reports
       - ../..:/workspace
     command: >
-      sh -c "mkdir /workspace/zap-reports && 
+      sh -c "mkdir -p /workspace/zap-reports && 
              cp -r /zap-reports/* /workspace/zap-reports"
