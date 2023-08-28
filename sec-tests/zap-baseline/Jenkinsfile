@@ -6,6 +6,13 @@ pipeline {
   agent any
   
   stages {
+    stage('clean') {
+      steps {
+        // Clean workspace
+        cleanWs()
+      }
+    }
+
     stage('build') {
       steps {
         // Check out source code into the workspace, initializing RailsGoat submodule
@@ -37,8 +44,8 @@ pipeline {
       // Archive reports with the build
       archiveArtifacts artifacts: 'railsgoat-zap-baseline.html', fingerprint: true
 
-      // Stop running containers
-      sh 'cd $WORKSPACE/sec-tests/zap-baseline && docker-compose stop'
+      // Clean up containers (remove containers and volumes)
+      sh 'cd $WORKSPACE/sec-tests/zap-baseline && docker-compose down --volumes'
     }
   } 
 }
