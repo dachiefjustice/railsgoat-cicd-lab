@@ -46,6 +46,9 @@ pipeline {
 
       // Clean up containers (remove containers and volumes)
       sh 'cd $WORKSPACE/sec-tests/zap-baseline && docker-compose down --volumes'
+
+      // Clean workspace
+      cleanWs()
     }
   } 
 }
