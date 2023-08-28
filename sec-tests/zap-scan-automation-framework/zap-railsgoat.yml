@@ -35,7 +35,7 @@ jobs:
     parameters:
       context: railsgoat
       user: ken
-      maxDuration: 10
+      maxDuration: 20
   - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
     parameters:
       context: railsgoat               # String: Name of the context to attack, default: first context
