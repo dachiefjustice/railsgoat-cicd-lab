@@ -25,9 +25,11 @@ services:
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
-  zap-copy-report-to-workspace:
-    image: alpine
+  zap-process-report:
+    build: ./process-report
     volumes:
       - zap-reports:/zap-reports
       - ../..:/workspace
-    command: /bin/sh -c "cp -r /zap-reports/* /workspace"
+    command: >
+      sh -c "zip -r /zap-reports/RailsGoatScanReport.zip /zap-reports/RailsGoat-scan-report.html /zap-reports/RailsGoat-scan-report/ &&
+             cp /zap-reports/RailsGoatScanReport.zip /workspace"
