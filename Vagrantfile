@@ -1,12 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Update the RailsGoat submodule (run as non-privileged vagrant user)
-$railsgoat_submodule_init = <<RAILSGOAT_SUBMOD_INIT
-cd /vagrant
-git submodule update --init --recursive --remote
-RAILSGOAT_SUBMOD_INIT
-
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/jammy64"
   config.vm.hostname = "railsgoat-cicd-lab"
@@ -29,7 +23,4 @@ Vagrant.configure("2") do |config|
     ansible.install = true
     ansible.playbook = "playbook-vagrant.yml"
   end
-  
-  # Update/initialize RailsGoat submodule
-  # config.vm.provision "shell", inline: $railsgoat_submodule_init, privileged: false
 end
