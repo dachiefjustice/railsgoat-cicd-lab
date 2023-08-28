@@ -43,6 +43,6 @@ jobs:
       # template:                         # String: The template id, default : modern
       # theme:                            # String: The template theme, default: the first theme defined for the template (if any)
       reportDir: /zap/wrk                 # String: The directory into which the report will be written
-      reportFile: "[[yyyy-MM-dd]]-[[HH:mm:ss]]-ZAP-Report-[[site]]"                         # String: The report file name pattern, default: {{yyyy-MM-dd}}-ZAP-Report-[[site]]
+      reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"                         # String: The report file name pattern, default: {{yyyy-MM-dd}}-ZAP-Report-[[site]]
       reportTitle: RailsGoat Full Scan    # String: The report title
       reportDescription: Spider and scan RailsGoat
