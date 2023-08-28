@@ -32,11 +32,23 @@ jobs:
       # url:                             # String: Url to start spidering from, default: first context URL
       maxDuration: 10                  # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
     tests:
-      - name: 'Confirm traditional spider is authenticated'
+      - name: 'Confirm railsgoat context is authenticated for traditional spider'
         type: stats
-        statistic: 'stats.auth.configure.auth.error'
+        statistic: 'stats.auth.configure.verification'
         operator: '=='
-        value: 0
+        value: 1
+        onFail: 'error'
+      - name: 'Confirm at least 1 successful authentication'
+        type: stats
+        statistic: 'stats.auth.success'
+        operator: '>='
+        value: 1
+        onFail: 'error'
+      - name: 'Confirm railsgoat context is using forms-based authentication'
+        type: stats
+        statistic: 'stats.auth.configure.auth.form'
+        operator: '>='
+        value: 1
         onFail: 'error'
   - type: spiderAjax
     parameters:
@@ -51,11 +63,23 @@ jobs:
       # maxRuleDurationInMins:           # Int: The max time in minutes any individual rule will be allowed to run for, default: 0 unlimited
       maxScanDurationInMins: 20        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
     tests:
-      - name: 'Confirm active scan is authenticated'
+      - name: 'Confirm railsgoat context is authenticated for active scan'
         type: stats
-        statistic: 'stats.auth.configure.auth.error'
+        statistic: 'stats.auth.configure.verification'
         operator: '=='
-        value: 0
+        value: 1
+        onFail: 'error'
+      - name: 'Confirm at least 1 successful authentication'
+        type: stats
+        statistic: 'stats.auth.success'
+        operator: '>='
+        value: 1
+        onFail: 'error'
+      - name: 'Confirm railsgoat context is using forms-based authentication'
+        type: stats
+        statistic: 'stats.auth.configure.auth.form'
+        operator: '>='
+        value: 1
         onFail: 'error'
   - type: report                       # Report generation
     parameters:
