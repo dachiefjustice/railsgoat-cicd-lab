@@ -31,5 +31,6 @@ services:
       - zap-reports:/zap-reports
       - ../..:/workspace
     command: >
-      sh -c "zip -r /zap-reports/RailsGoatScanReport.zip /zap-reports/RailsGoat-scan-report.html /zap-reports/RailsGoat-scan-report/ &&
-             cp /zap-reports/RailsGoatScanReport.zip /workspace"
+      sh -c " cd /zap-reports &&
+              zip -r RailsGoatScanReport.zip RailsGoat-scan-report.html RailsGoat-scan-report/ &&
+              cp /zap-reports/RailsGoatScanReport.zip /workspace"
