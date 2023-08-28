@@ -5,9 +5,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/jammy64"
   config.vm.hostname = "railsgoat-cicd-lab"
   
-  # Forward railsgoat (3000) and Jenkins (8080) web interfaces to the host
-  # IMPORTANT: for security, only expose RailsGoat (deliberately vulnerable) to the host machine
-  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+  # Forward Jenkins (8080) web interface to the host
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   
   # Explicitly follow Vagrant default, replace insecure key with a generated key
