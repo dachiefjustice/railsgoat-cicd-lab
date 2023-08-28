@@ -31,6 +31,11 @@ jobs:
       user: ken                        # String: An optional user to use for authentication, must be defined in the env
       # url:                             # String: Url to start spidering from, default: first context URL
       maxDuration: 10                  # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
+  - type: spiderAjax
+    parameters:
+      context: railsgoat
+      user: ken
+      maxDuration: 10
   - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
     parameters:
       context: railsgoat               # String: Name of the context to attack, default: first context
