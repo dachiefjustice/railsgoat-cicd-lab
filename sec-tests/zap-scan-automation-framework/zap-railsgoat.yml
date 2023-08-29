@@ -12,7 +12,7 @@ env:
       parameters:
         loginPageUrl: "http://railsgoat-web:3000"
         loginPageWait: 2
-        browserId: "firefox"
+        browserId: "firefox-headless"
       verification:
         method: "poll"
         loggedInRegex: "\\Q 200 OK\\E"
