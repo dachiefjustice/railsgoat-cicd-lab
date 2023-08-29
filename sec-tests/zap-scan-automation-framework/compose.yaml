@@ -21,7 +21,8 @@ services:
     command: bash -c "zap.sh -cmd -autorun /zap/zap-railsgoat.yml"
     volumes:
       - zap-reports:/zap/wrk/:rw
-      - ./zap-railsgoat.yml:/zap/zap-railsgoat.yml:ro
+      # - ./zap-railsgoat.yml:/zap/zap-railsgoat.yml:ro
+      - ./RailsgoatAuthenticatedFullScan.yaml:/zap/zap-railsgoat.yml:ro
     depends_on:
       - railsgoat-web
       - zap-scan-initializer

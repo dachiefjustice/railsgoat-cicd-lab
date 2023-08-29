@@ -1,0 +1,89 @@
+---
+env:
+  contexts:
+  - name: "RailsgoatAuth"
+    urls:
+    - "http://railsgoat-web:3000"
+    includePaths:
+    - "http://railsgoat-web:3000.*"
+    excludePaths: []
+    authentication:
+      method: "browser"
+      parameters:
+        loginPageUrl: "http://railsgoat-web:3000"
+        loginPageWait: 2
+        browserId: "firefox-headless"
+      verification:
+        method: "poll"
+        loggedInRegex: "\\Q 200 OK\\E"
+        loggedOutRegex: "\\Q 302 Found\\E"
+        pollFrequency: 60
+        pollUnits: "requests"
+        pollUrl: "http://railsgoat-web:3000/dashboard/home"
+        pollPostData: ""
+    sessionManagement:
+      method: "headers"
+      parameters: {}
+    technology:
+      exclude: []
+    users:
+    - name: "ken@metacorp.com"
+      credentials:
+        password: "citrusblend"
+        username: "ken@metacorp.com"
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+  vars: {}
+jobs:
+- parameters:
+    scanOnlyInScope: true
+    enableTags: false
+    disableAllRules: false
+  rules: []
+  name: "passiveScan-config"
+  type: "passiveScan-config"
+- parameters: {}
+  name: "spider"
+  type: "spider"
+  tests:
+  - onFail: "INFO"
+    statistic: "automation.spider.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"
+- parameters:
+    maxDuration: 60
+    maxCrawlDepth: 10
+    numberOfBrowsers: 4
+    inScopeOnly: true
+    excludedElements: []
+  name: "spiderAjax"
+  type: "spiderAjax"
+  tests:
+  - onFail: "INFO"
+    statistic: "spiderAjax.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"
+- parameters: {}
+  name: "passiveScan-wait"
+  type: "passiveScan-wait"
+- parameters: {}
+  policyDefinition:
+    rules: []
+  name: "activeScan"
+  type: "activeScan"
+- parameters:
+    reportDir: /zap/wrk
+    reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
+    reportTitle: RailsGoat Full Scan
+    reportDescription: Spider and scan RailsGoat
+  name: "report"
+  type: "report"
+
