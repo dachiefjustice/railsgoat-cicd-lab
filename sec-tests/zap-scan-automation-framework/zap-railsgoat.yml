@@ -41,8 +41,7 @@ jobs:
     parameters:
       context: railsgoat               # String: Name of the context to spider, default: first context
       user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
-      # url:                             # String: Url to start spidering from, default: first context URL
-      maxDuration: 10                  # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
+      maxDuration: 15                 # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
     tests:
       - name: 'Confirm railsgoat context is authenticated for traditional spider'
         type: stats
@@ -73,7 +72,7 @@ jobs:
       user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
       # policy:                          # String: Name of the scan policy to be used, default: Default Policy
       # maxRuleDurationInMins:           # Int: The max time in minutes any individual rule will be allowed to run for, default: 0 unlimited
-      maxScanDurationInMins: 20        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
+      maxScanDurationInMins: 30        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
     tests:
       - name: 'Confirm railsgoat context is authenticated for active scan'
         type: stats
@@ -97,7 +96,7 @@ jobs:
     parameters:
       # template:                         # String: The template id, default : modern
       # theme:                            # String: The template theme, default: the first theme defined for the template (if any)
-      reportDir: /zap/wrk                 # String: The directory into which the report will be written
-      reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"                         # String: The report file name pattern, default: {{yyyy-MM-dd}}-ZAP-Report-[[site]]
-      reportTitle: RailsGoat Full Scan    # String: The report title
+      reportDir: /zap/wrk
+      reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
+      reportTitle: RailsGoat Full Scan    
       reportDescription: Spider and scan RailsGoat
