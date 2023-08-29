@@ -84,33 +84,33 @@ jobs:
     - name: 'Current number of successful authentications'
       type: monitor
       statistic: 'stats.auth.success'
-      threshold: 0
-      onFail: 'info'
+      threshold: 10
+      onFail: 'INFO'
     - name: 'Current number of failed authentications'
       type: monitor
       statistic: 'stats.auth.failure'
-      threshold: 0
-      onFail: 'info'
+      threshold: 10
+      onFail: 'INFO'
     - name: 'Current number of logged-in messages'
       type: monitor
       statistic: 'stats.auth.state.loggedin'
-      threshold: 0
-      onFail: 'info'
+      threshold: 10
+      onFail: 'INFO'
     - name: 'Current number of logged-out messages'
       type: monitor
       statistic: 'stats.auth.state.loggedout'
-      threshold: 0
-      onFail: 'info'
+      threshold: 10
+      onFail: 'INFO'
     - name: 'Current number of unknown-auth-state messages'
       type: monitor
       statistic: 'stats.auth.state.unknown'
-      threshold: 0
-      onFail: 'info'
+      threshold: 10
+      onFail: 'INFO'
     - name: 'Current number of no-auth-state-indicator messages'
       type: monitor
       statistic: 'stats.auth.state.noindicator'
-      threshold: 0
-      onFail: 'info'
+      threshold: 10
+      onFail: 'INFO'
 
     #### Statistic tests (post-scan) ####
     - name: 'Confirm railsgoat context is authenticated for active scan'
