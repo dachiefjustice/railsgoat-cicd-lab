@@ -44,7 +44,8 @@ jobs:
   rules: []
   name: "passiveScan-config"
   type: "passiveScan-config"
-- parameters: {}
+- parameters:
+    user: "ken@metacorp.com"
   name: "spider"
   type: "spider"
   tests:
