@@ -3,32 +3,44 @@ env:
   contexts:
   - name: "railsgoat"
     urls:
-    - "http://railsgoat-web:3000/"
+    - "http://railsgoat-web:3000"
     includePaths:
-    - "http://railsgoat-web:3000/*"
+    - "http://railsgoat-web:3000.*"
     excludePaths: []
     authentication:
       method: "browser"
       parameters:
         loginPageUrl: "http://railsgoat-web:3000"
-        loginPageWait: 5
-        browserId: "firefox-headless"
+        loginPageWait: 2
+        browserId: "firefox"
       verification:
-        method: "autodetect"
+        method: "poll"
+        loggedInRegex: "\\Q 200 OK\\E"
+        loggedOutRegex: "\\Q 302 Found\\E"
+        pollFrequency: 60
+        pollUnits: "requests"
+        pollUrl: "http://railsgoat-web:3000/dashboard/home"
+        pollPostData: ""
     sessionManagement:
-      method: "autodetect"
+      method: "headers"
       parameters: {}
+    technology:
+      exclude: []
     users:
-    - name: "ken"
+    - name: "ken@metacorp.com"
       credentials:
         username: "ken@metacorp.com"
         password: "citrusblend"
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
 
 jobs:
   - type: spider                       # The traditional spider - fast but doesnt handle modern apps so well
     parameters:
       context: railsgoat               # String: Name of the context to spider, default: first context
-      user: ken                        # String: An optional user to use for authentication, must be defined in the env
+      user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
       # url:                             # String: Url to start spidering from, default: first context URL
       maxDuration: 10                  # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
     # tests:
@@ -58,7 +70,7 @@ jobs:
   - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
     parameters:
       context: railsgoat               # String: Name of the context to attack, default: first context
-      user: ken                        # String: An optional user to use for authentication, must be defined in the env
+      user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
       # policy:                          # String: Name of the scan policy to be used, default: Default Policy
       # maxRuleDurationInMins:           # Int: The max time in minutes any individual rule will be allowed to run for, default: 0 unlimited
       maxScanDurationInMins: 20        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
