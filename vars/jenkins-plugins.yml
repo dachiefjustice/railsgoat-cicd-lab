@@ -83,3 +83,6 @@ jenkins_plugins:
   - github-api
   - github
   - github-branch-source
+
+  # Other plugins
+  - pipeline-utility-steps # for creating zip files
