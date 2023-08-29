@@ -79,6 +79,19 @@ jobs:
     rules: []
   name: "activeScan"
   type: "activeScan"
+  tests:
+    - name: 'Confirm railsgoat context is authenticated for active scan'
+      type: stats
+      statistic: 'stats.auth.configure.verification'
+      operator: '>='
+      value: 1
+      onFail: 'warn'
+    - name: 'Confirm at least 1 successful authentication'
+      type: stats
+      statistic: 'stats.auth.success'
+      operator: '>='
+      value: 1
+      onFail: 'warn'
 - parameters:
     reportDir: /zap/wrk
     reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
