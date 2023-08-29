@@ -29,8 +29,8 @@ env:
     users:
     - name: "ken@metacorp.com"
       credentials:
-        username: "ken@metacorp.com"
         password: "citrusblend"
+        username: "ken@metacorp.com"
   parameters:
     failOnError: true
     failOnWarning: false
