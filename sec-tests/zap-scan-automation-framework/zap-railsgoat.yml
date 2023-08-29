@@ -42,8 +42,39 @@ jobs:
       context: railsgoat               # String: Name of the context to spider, default: first context
       user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
       maxDuration: 15                 # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
+    # tests:
+    #   - name: 'Confirm railsgoat context is authenticated for traditional spider'
+    #     type: stats
+    #     statistic: 'stats.auth.configure.verification'
+    #     operator: '>='
+    #     value: 1
+    #     onFail: 'error'
+    #   - name: 'Confirm at least 1 successful authentication'
+    #     type: stats
+    #     statistic: 'stats.auth.success'
+    #     operator: '>='
+    #     value: 1
+    #     onFail: 'error'
+    #   - name: 'Confirm railsgoat context is using forms-based authentication'
+    #     type: stats
+    #     statistic: 'stats.auth.configure.auth.form'
+    #     operator: '>='
+    #     value: 1
+    #     onFail: 'error'
+  # - type: spiderAjax
+  #   parameters:
+  #     context: railsgoat
+  #     user: "ken@metacorp.com"
+  #     maxDuration: 20
+  - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
+    parameters:
+      context: railsgoat               # String: Name of the context to attack, default: first context
+      user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
+      # policy:                          # String: Name of the scan policy to be used, default: Default Policy
+      # maxRuleDurationInMins:           # Int: The max time in minutes any individual rule will be allowed to run for, default: 0 unlimited
+      maxScanDurationInMins: 30        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
     tests:
-      - name: 'Confirm railsgoat context is authenticated for traditional spider'
+      - name: 'Confirm railsgoat context is authenticated for active scan'
         type: stats
         statistic: 'stats.auth.configure.verification'
         operator: '>='
@@ -61,37 +92,6 @@ jobs:
         operator: '>='
         value: 1
         onFail: 'error'
-  # - type: spiderAjax
-  #   parameters:
-  #     context: railsgoat
-  #     user: "ken@metacorp.com"
-  #     maxDuration: 20
-  # - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
-  #   parameters:
-  #     context: railsgoat               # String: Name of the context to attack, default: first context
-  #     user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
-  #     # policy:                          # String: Name of the scan policy to be used, default: Default Policy
-  #     # maxRuleDurationInMins:           # Int: The max time in minutes any individual rule will be allowed to run for, default: 0 unlimited
-  #     maxScanDurationInMins: 30        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
-  #   tests:
-  #     - name: 'Confirm railsgoat context is authenticated for active scan'
-  #       type: stats
-  #       statistic: 'stats.auth.configure.verification'
-  #       operator: '>='
-  #       value: 1
-  #       onFail: 'error'
-  #     - name: 'Confirm at least 1 successful authentication'
-  #       type: stats
-  #       statistic: 'stats.auth.success'
-  #       operator: '>='
-  #       value: 1
-  #       onFail: 'error'
-  #     - name: 'Confirm railsgoat context is using forms-based authentication'
-  #       type: stats
-  #       statistic: 'stats.auth.configure.auth.form'
-  #       operator: '>='
-  #       value: 1
-  #       onFail: 'error'
   - type: report                       # Report generation
     parameters:
       # template:                         # String: The template id, default : modern
