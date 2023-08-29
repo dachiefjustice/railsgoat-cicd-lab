@@ -50,11 +50,11 @@ jobs:
     #     operator: '>='
     #     value: 1
     #     onFail: 'error'
-  - type: spiderAjax
-    parameters:
-      context: railsgoat
-      user: ken
-      maxDuration: 20
+  # - type: spiderAjax
+  #   parameters:
+  #     context: railsgoat
+  #     user: ken
+  #     maxDuration: 20
   - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
     parameters:
       context: railsgoat               # String: Name of the context to attack, default: first context
