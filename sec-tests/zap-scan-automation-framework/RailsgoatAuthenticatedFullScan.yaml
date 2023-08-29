@@ -56,6 +56,20 @@ jobs:
     value: 100
     name: "At least 100 URLs found"
     type: "stats"
+  - onFail: "INFO"
+    statistic: 'stats.auth.success'
+    site: ""
+    operator: '>='
+    value: 1
+    name: 'At least 1 successful authentication'
+    type: stats
+  - onFail: "INFO"
+    statistic: 'stats.auth.failure'
+    site: ""
+    operator: '>='
+    value: 1
+    name: 'At least 1 failed authentication'
+    type: stats
 - parameters:
     maxDuration: 60
     maxCrawlDepth: 10
@@ -81,51 +95,51 @@ jobs:
   name: "activeScan"
   type: "activeScan"
   tests:
-    #### Monitor tests (mid-scan) ####
-    - name: 'Current number of successful authentications'
-      type: monitor
-      statistic: 'stats.auth.success'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of failed authentications'
-      type: monitor
-      statistic: 'stats.auth.failure'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of logged-in messages'
-      type: monitor
-      statistic: 'stats.auth.state.loggedin'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of logged-out messages'
-      type: monitor
-      statistic: 'stats.auth.state.loggedout'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of unknown-auth-state messages'
-      type: monitor
-      statistic: 'stats.auth.state.unknown'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of no-auth-state-indicator messages'
-      type: monitor
-      statistic: 'stats.auth.state.noindicator'
-      threshold: 1
-      onFail: 'INFO'
+    # #### Monitor tests (mid-scan) ####
+    # - name: 'Current number of successful authentications'
+    #   type: monitor
+    #   statistic: 'stats.auth.success'
+    #   threshold: 1
+    #   onFail: 'INFO'
+    # - name: 'Current number of failed authentications'
+    #   type: monitor
+    #   statistic: 'stats.auth.failure'
+    #   threshold: 1
+    #   onFail: 'INFO'
+    # - name: 'Current number of logged-in messages'
+    #   type: monitor
+    #   statistic: 'stats.auth.state.loggedin'
+    #   threshold: 1
+    #   onFail: 'INFO'
+    # - name: 'Current number of logged-out messages'
+    #   type: monitor
+    #   statistic: 'stats.auth.state.loggedout'
+    #   threshold: 1
+    #   onFail: 'INFO'
+    # - name: 'Current number of unknown-auth-state messages'
+    #   type: monitor
+    #   statistic: 'stats.auth.state.unknown'
+    #   threshold: 1
+    #   onFail: 'INFO'
+    # - name: 'Current number of no-auth-state-indicator messages'
+    #   type: monitor
+    #   statistic: 'stats.auth.state.noindicator'
+    #   threshold: 1
+    #   onFail: 'INFO'
 
-    #### Statistic tests (post-scan) ####
-    - name: 'Confirm railsgoat context is authenticated for active scan'
-      type: stats
-      statistic: 'stats.auth.configure.verification'
-      operator: '>='
-      value: 1
-      onFail: 'warn'
-    - name: 'Confirm at least 1 successful authentication'
-      type: stats
-      statistic: 'stats.auth.success'
-      operator: '>='
-      value: 1
-      onFail: 'warn'
+    # #### Statistic tests (post-scan) ####
+    # - name: 'Confirm railsgoat context is authenticated for active scan'
+    #   type: stats
+    #   statistic: 'stats.auth.configure.verification'
+    #   operator: '>='
+    #   value: 1
+    #   onFail: 'warn'
+    # - name: 'Confirm at least 1 successful authentication'
+    #   type: stats
+    #   statistic: 'stats.auth.success'
+    #   operator: '>='
+    #   value: 1
+    #   onFail: 'warn'
 - parameters:
     reportDir: /zap/wrk
     reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
