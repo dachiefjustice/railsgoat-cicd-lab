@@ -117,12 +117,12 @@ jobs:
   name: "activeScan"
   type: "activeScan"
   tests:
-    #### Monitor tests (mid-scan) ####
-    - name: 'Number of detected railsgoat session tokens'
-      type: monitor
-      statistic: stats.auth.detect.session._railsgoat_session
-      threshold: 1
-      onFail: 'INFO'
+    # #### Monitor tests (mid-scan) ####
+    # - name: 'Number of detected railsgoat session tokens'
+    #   type: monitor
+    #   statistic: stats.auth.detect.session._railsgoat_session
+    #   threshold: 1
+    #   onFail: 'INFO'
     
     #### Stat tests (post-scan) ####
     - name: 'Confirm at least 1 successful railsgoat session token'
