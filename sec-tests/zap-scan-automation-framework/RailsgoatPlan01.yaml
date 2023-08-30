@@ -66,13 +66,6 @@ jobs:
     value: 100
     name: "At least 100 URLs found"
     type: "stats"
-
-  #### Monitor tests (mid-scan) ####
-  - name: 'Number of detected railsgoat session tokens'
-    type: monitor
-    statistic: stats.auth.detect.session._railsgoat_session
-    threshold: 1
-    onFail: 'INFO'
     
   #### Stat tests (post-scan) ####
   - name: 'Confirm at least 1 successful railsgoat session token'
@@ -94,22 +87,14 @@ jobs:
   name: "spiderAjax"
   type: "spiderAjax"
   tests:
+  #### Stat tests (post-scan) ####
   - onFail: "INFO"
     statistic: "spiderAjax.urls.added"
     site: ""
     operator: ">="
     value: 100
     name: "At least 100 URLs found"
-    type: "stats"
-  
-  #### Monitor tests (mid-scan) ####
-  - name: 'Number of detected railsgoat session tokens'
-    type: monitor
-    statistic: stats.auth.detect.session._railsgoat_session
-    threshold: 1
-    onFail: 'INFO'
-    
-  #### Stat tests (post-scan) ####
+    type: "stats"    
   - name: 'Confirm at least 1 successful railsgoat session token'
     type: stats
     statistic: 'stats.auth.detect.session._railsgoat_session'
