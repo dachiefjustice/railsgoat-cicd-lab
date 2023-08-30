@@ -17,14 +17,14 @@ pipeline {
         )
 
         // Build required containers
-        sh 'cd $WORKSPACE/sec-tests/zap-2-full-auto && docker-compose build'
+        sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose build'
       }
     }
 
     stage('test') {
       steps {
         // Run full ZAP scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap-2-full-auto && docker-compose up zap-scan-full-auto'
+        sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose up zap-scan-full-auto'
       }
     }
   }
@@ -32,14 +32,14 @@ pipeline {
   post {
     always {
       // Copy the report from Docker volume to the workspace
-      sh 'cd $WORKSPACE/sec-tests/zap-2-full-auto && docker-compose up zap-copy-report-to-workspace'
+      sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose up zap-copy-report-to-workspace'
 
       // Archive reports with the build
       // archiveArtifacts artifacts: 'railsgoat-zap-baseline.html', fingerprint: true
       archiveArtifacts artifacts: 'railsgoat-zap-full-auto.html', fingerprint: true
 
       // Stop running containers
-      sh 'cd $WORKSPACE/sec-tests/zap-2-full-auto && docker-compose stop'
+      sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose stop'
     }
   }
 }
