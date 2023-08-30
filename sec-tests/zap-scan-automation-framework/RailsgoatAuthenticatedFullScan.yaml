@@ -44,8 +44,7 @@ jobs:
   rules: []
   name: "passiveScan-config"
   type: "passiveScan-config"
-- parameters:
-    user: "ken@metacorp.com"
+- parameters: {}
   name: "spider"
   type: "spider"
   tests:
@@ -56,20 +55,6 @@ jobs:
     value: 100
     name: "At least 100 URLs found"
     type: "stats"
-  - onFail: "INFO"
-    statistic: 'stats.auth.success'
-    site: ""
-    operator: '>='
-    value: 1
-    name: 'At least 1 successful authentication'
-    type: stats
-  - onFail: "INFO"
-    statistic: 'stats.auth.failure'
-    site: ""
-    operator: '>='
-    value: 1
-    name: 'At least 1 failed authentication'
-    type: stats
 - parameters:
     maxDuration: 60
     maxCrawlDepth: 10
