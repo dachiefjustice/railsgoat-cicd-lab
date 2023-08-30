@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 
   # Plenty of RAM
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "4096"
+    vb.memory = "6144"
   end
   
   # Set up lab environment with Ansible
