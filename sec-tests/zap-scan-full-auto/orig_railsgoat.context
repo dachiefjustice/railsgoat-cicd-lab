@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration>
     <context>
-        <name>Railsgoat</name>
+        <name>railsgoat</name>
         <desc/>
         <inscope>true</inscope>
-        <incregexes>http://localhost:3002.*</incregexes>
-        <excregexes>http://localhost:3002/logout</excregexes>
-        <excregexes>http://localhost:3002/user.+\.json</excregexes>
-        <excregexes>http://localhost:3002/admin/.+/update_user.json</excregexes>
+        <incregexes>http://railsgoat-web:3000.*</incregexes>
         <tech>
             <include>Db</include>
             <include>Db.CouchDB</include>
@@ -57,24 +54,22 @@
         <authentication>
             <type>6</type>
             <strategy>POLL_URL</strategy>
-            <pollurl>http://localhost:3002/users/1/account_settings</pollurl>
+            <pollurl>http://railsgoat-web:3000/dashboard/home</pollurl>
             <polldata/>
-            <pollheaders>content-type: application/x-www-form-urlencoded; charset=UTF-8</pollheaders>
             <pollfreq>60</pollfreq>
             <pollunits>REQUESTS</pollunits>
             <loggedin>\Q 200 OK\E</loggedin>
             <loggedout>\Q 302 Found\E</loggedout>
             <browser>
-                <loginpageurl>http://localhost:3002</loginpageurl>
-                <browserid>firefox-headless</browserid>
+                <loginpageurl>http://railsgoat-web:3000</loginpageurl>
+                <browserid>firefox</browserid>
                 <loginpagewait>2</loginpagewait>
             </browser>
         </authentication>
         <users>
-            <user>153;true;YWRtaW5AbWV0YWNvcnAuY29t;6;YWRtaW5AbWV0YWNvcnAuY29t~YWRtaW4xMjM0~</user>
-            <user>168;true;a2VuQG1ldGFjb3JwLmNvbQ==;6;a2VuQG1ldGFjb3JwLmNvbQ==~Y2l0cnVzYmxlbmQ=~</user>
+            <user>6;true;a2VuQG1ldGFjb3JwLmNvbQ==;6;a2VuQG1ldGFjb3JwLmNvbQ==~Y2l0cnVzYmxlbmQ=~</user>
         </users>
-        <forceduser>168</forceduser>
+        <forceduser>-1</forceduser>
         <session>
             <type>3</type>
         </session>
