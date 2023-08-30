@@ -56,9 +56,6 @@ jobs:
     context: "Railsgoat"
     user: "ken@metacorp.com"
     url: "http://railsgoat-web:3000"
-    maxDuration: 0
-    maxDepth: 0
-    maxChildren: 0
   name: "spider"
   type: "spider"
   tests:
@@ -69,6 +66,21 @@ jobs:
     value: 100
     name: "At least 100 URLs found"
     type: "stats"
+
+  #### Monitor tests (mid-scan) ####
+  - name: 'Number of detected railsgoat session tokens'
+    type: monitor
+    statistic: stats.auth.detect.session._railsgoat_session
+    threshold: 1
+    onFail: 'INFO'
+    
+  #### Stat tests (post-scan) ####
+  - name: 'Confirm at least 1 successful railsgoat session token'
+    type: stats
+    statistic: 'stats.auth.detect.session._railsgoat_session'
+    operator: '>='
+    value: 1
+    onFail: 'ERROR'
 - parameters:
     context: "Railsgoat"
     user: "ken@metacorp.com"
@@ -89,6 +101,21 @@ jobs:
     value: 100
     name: "At least 100 URLs found"
     type: "stats"
+  
+  #### Monitor tests (mid-scan) ####
+  - name: 'Number of detected railsgoat session tokens'
+    type: monitor
+    statistic: stats.auth.detect.session._railsgoat_session
+    threshold: 1
+    onFail: 'INFO'
+    
+  #### Stat tests (post-scan) ####
+  - name: 'Confirm at least 1 successful railsgoat session token'
+    type: stats
+    statistic: 'stats.auth.detect.session._railsgoat_session'
+    operator: '>='
+    value: 1
+    onFail: 'ERROR'
 - parameters: {}
   name: "passiveScan-wait"
   type: "passiveScan-wait"
@@ -111,36 +138,14 @@ jobs:
       statistic: stats.auth.detect.session._railsgoat_session
       threshold: 1
       onFail: 'INFO'
-    - name: 'Current number of successful authentications'
-      type: monitor
-      statistic: 'stats.auth.success'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of failed authentications'
-      type: monitor
-      statistic: 'stats.auth.failure'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of logged-in messages'
-      type: monitor
-      statistic: 'stats.auth.state.loggedin'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of logged-out messages'
-      type: monitor
-      statistic: 'stats.auth.state.loggedout'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of unknown-auth-state messages'
-      type: monitor
-      statistic: 'stats.auth.state.unknown'
-      threshold: 1
-      onFail: 'INFO'
-    - name: 'Current number of no-auth-state-indicator messages'
-      type: monitor
-      statistic: 'stats.auth.state.noindicator'
-      threshold: 1
-      onFail: 'INFO'
+    
+    #### Stat tests (post-scan) ####
+    - name: 'Confirm at least 1 successful railsgoat session token'
+      type: stats
+      statistic: 'stats.auth.detect.session._railsgoat_session'
+      operator: '>='
+      value: 1
+      onFail: 'ERROR'
 - parameters:
     reportDir: /zap/wrk
     reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
