@@ -35,11 +35,10 @@ pipeline {
       sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose up zap-copy-report-to-workspace'
 
       // Archive reports with the build
-      // archiveArtifacts artifacts: 'railsgoat-zap-baseline.html', fingerprint: true
-      archiveArtifacts artifacts: 'railsgoat-zap-full-auto.html', fingerprint: true
+      archiveArtifacts artifacts: 'railsgoat-zap-full-auto.html'
 
-      // Stop running containers
-      sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose stop'
+      // Clean up containers (remove containers and volumes)
+      sh 'cd $WORKSPACE/sec-tests/zap-scan-full-auto && docker-compose down --volumes'
     }
   }
 }

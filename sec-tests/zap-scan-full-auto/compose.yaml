@@ -30,7 +30,9 @@ services:
     volumes:
       - zap-reports:/zap-reports
       - ../..:/workspace
-    command: /bin/sh -c "cp /zap-reports/* /workspace"
+    command: >
+      sh -c "mkdir -p /workspace/zap-reports &&  
+            cp /zap-reports/* /workspace/zap-reports"
   # zap-scan-automation-framework:
   #   image: ghcr.io/zaproxy/zaproxy:stable
   #   command: bash -c "zap.sh -daemon -autorun /zap/zap-railsgoat.yml"
