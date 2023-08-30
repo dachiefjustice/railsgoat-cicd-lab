@@ -6,6 +6,7 @@
         <inscope>true</inscope>
         <incregexes>http://railsgoat-web:3000.*</incregexes>
         <excregexes>http://railsgoat-web:3000/logout</excregexes>
+        <excregexes>http://railsgoat-web:3000/admin/.+/delete_user.json</excregexes>
         <excregexes>http://railsgoat-web:3000/user.+\.json</excregexes>
         <excregexes>http://railsgoat-web:3000/admin/.+/update_user.json</excregexes>
         <tech>
