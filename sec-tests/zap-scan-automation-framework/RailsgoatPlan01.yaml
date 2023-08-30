@@ -1,0 +1,151 @@
+---
+env:
+  contexts:
+  - name: "Railsgoat"
+    urls:
+    - "http://railsgoat-web:3000"
+    includePaths:
+    - "http://railsgoat-web:3000.*"
+    excludePaths:
+    - "http://railsgoat-web:3000/logout"
+    - "http://railsgoat-web:3000/admin/.+/delete_user.json"
+    - "http://railsgoat-web:3000/user.+\\.json"
+    - "http://railsgoat-web:3000/admin/.+/update_user.json"
+    authentication:
+      method: "browser"
+      parameters:
+        loginPageUrl: "http://railsgoat-web:3000"
+        loginPageWait: 2
+        browserId: "htmlunit"
+      verification:
+        method: "poll"
+        loggedInRegex: "\\Q 200 OK\\E"
+        loggedOutRegex: "\\Q 302 Found\\E"
+        pollFrequency: 60
+        pollUnits: "requests"
+        pollUrl: "http://railsgoat-web:3000/dashboard/home"
+        pollPostData: ""
+    sessionManagement:
+      method: "cookie"
+      parameters: {}
+    technology:
+      exclude: []
+    users:
+    - name: "ken@metacorp.com"
+      credentials:
+        password: "citrusblend"
+        username: "ken@metacorp.com"
+    - name: "admin@metacorp.com"
+      credentials:
+        password: "admin1234"
+        username: "admin@metacorp.com"
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+  vars: {}
+jobs:
+- parameters:
+    scanOnlyInScope: true
+    enableTags: false
+    disableAllRules: false
+  rules: []
+  name: "passiveScan-config"
+  type: "passiveScan-config"
+- parameters:
+    context: "Railsgoat"
+    user: "ken@metacorp.com"
+    url: "http://railsgoat-web:3000"
+    maxDuration: 0
+    maxDepth: 0
+    maxChildren: 0
+  name: "spider"
+  type: "spider"
+  tests:
+  - onFail: "INFO"
+    statistic: "automation.spider.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"
+- parameters:
+    context: "Railsgoat"
+    user: "ken@metacorp.com"
+    url: "http://railsgoat-web:3000"
+    maxDuration: 60
+    maxCrawlDepth: 10
+    numberOfBrowsers: 4
+    inScopeOnly: true
+    runOnlyIfModern: false
+    excludedElements: []
+  name: "spiderAjax"
+  type: "spiderAjax"
+  tests:
+  - onFail: "INFO"
+    statistic: "spiderAjax.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"
+- parameters: {}
+  name: "passiveScan-wait"
+  type: "passiveScan-wait"
+- parameters:
+    context: "Railsgoat"
+    user: "ken@metacorp.com"
+    policy: ""
+    maxRuleDurationInMins: 0
+    maxScanDurationInMins: 0
+  policyDefinition:
+    defaultStrength: "medium"
+    defaultThreshold: "medium"
+    rules: []
+  name: "activeScan"
+  type: "activeScan"
+  tests:
+    #### Monitor tests (mid-scan) ####
+    - name: 'Number of detected railsgoat session tokens'
+      type: monitor
+      statistic: stats.auth.detect.session._railsgoat_session
+      threshold: 1
+      onFail: 'INFO'
+    - name: 'Current number of successful authentications'
+      type: monitor
+      statistic: 'stats.auth.success'
+      threshold: 1
+      onFail: 'INFO'
+    - name: 'Current number of failed authentications'
+      type: monitor
+      statistic: 'stats.auth.failure'
+      threshold: 1
+      onFail: 'INFO'
+    - name: 'Current number of logged-in messages'
+      type: monitor
+      statistic: 'stats.auth.state.loggedin'
+      threshold: 1
+      onFail: 'INFO'
+    - name: 'Current number of logged-out messages'
+      type: monitor
+      statistic: 'stats.auth.state.loggedout'
+      threshold: 1
+      onFail: 'INFO'
+    - name: 'Current number of unknown-auth-state messages'
+      type: monitor
+      statistic: 'stats.auth.state.unknown'
+      threshold: 1
+      onFail: 'INFO'
+    - name: 'Current number of no-auth-state-indicator messages'
+      type: monitor
+      statistic: 'stats.auth.state.noindicator'
+      threshold: 1
+      onFail: 'INFO'
+- parameters:
+    reportDir: /zap/wrk
+    reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
+    reportTitle: RailsGoat Full Scan
+    reportDescription: Spider and scan RailsGoat
+  name: "report"
+  type: "report"
+

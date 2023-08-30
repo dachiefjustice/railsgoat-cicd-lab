@@ -98,5 +98,5 @@ jobs:
       # theme:                            # String: The template theme, default: the first theme defined for the template (if any)
       reportDir: /zap/wrk
       reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
-      reportTitle: RailsGoat Full Scan    
+      reportTitle: RailsGoat Full Scan
       reportDescription: Spider and scan RailsGoat
