@@ -16,15 +16,15 @@ pipeline {
             userRemoteConfigs: [[url: 'file:///vagrant']]
         )
 
-        // Build required containers
-        sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose build'
+        // Build/pull required containers
+        sh 'docker-compose --file $WORKSPACE/sec-tests/zap-scan-automation-framework/compose.yaml build --pull'
       }
     }
 
     stage('zap-authenticated-scan') {
       steps {
         // Run an automation framework scan against RailsGoat
-        sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose up zap-scan-automation-framework'
+        sh 'docker-compose --file $WORKSPACE/sec-tests/zap-scan-automation-framework/compose.yaml up zap-scan-automation-framework'
       }
     }
   }
