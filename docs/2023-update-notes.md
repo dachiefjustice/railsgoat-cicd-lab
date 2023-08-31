@@ -29,21 +29,23 @@ docker run -v /var/lib/jenkins/workspace/arachni_master/sec-tests/arachni:/arach
 ```
 "Report does not exist: /arachni_vol/arachni_railsgoat_report.afr"
 
-EDIT: 
+EDIT: discarded in favor of ZAP
 
 # TODOs
 ## In progress
-[ ] Re-test lab instructions
+[ ] Redo lab instructions
 [ ] Re-take screenshots
 
 ## Completed
-[x] Update base box to latest Ubuntu LTS
+~~[x] Update base box to latest Ubuntu LTS~~
+[x] Update base box to latest stable Debian
 [x] Update to latest stable Jenkins
-[x] Update VM hostnamed
+[x] Update VM hostname
 [x] Update provisioning to use Ansible
 [x] Allow using `file://` in Jenkins jobs
 [x] Update docker-compose to latest
-[x] Update arachni to latest
+~~[x] Update arachni to latest~~
+[x] Add ZAP scans
 
 ## Discarded
 [ ] Fix Arachni scan (using ZAP instead; more reliably maintained, problems with Arachni Chrome/Chromedriver version)
