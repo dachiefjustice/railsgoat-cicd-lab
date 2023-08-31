@@ -21,9 +21,9 @@ pipeline {
       }
     }
 
-    stage('test') {
+    stage('zap-authenticated-scan') {
       steps {
-        // Run baseline ZAP scan against RailsGoat
+        // Run an automation framework scan against RailsGoat
         sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose up zap-scan-automation-framework'
       }
     }

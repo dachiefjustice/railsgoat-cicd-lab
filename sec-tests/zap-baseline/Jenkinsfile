@@ -28,7 +28,7 @@ pipeline {
       }
     }
 
-    stage('test') {
+    stage('zap-baseline-scan') {
       steps {
         // Run baseline ZAP scan against RailsGoat
         sh 'cd $WORKSPACE/sec-tests/zap-baseline && docker-compose up zap-scan-baseline'
