@@ -1,18 +1,22 @@
 ---
 env:
   contexts:
-  - name: "railsgoat"
+  - name: "Railsgoat"
     urls:
     - "http://railsgoat-web:3000"
     includePaths:
     - "http://railsgoat-web:3000.*"
-    excludePaths: []
+    excludePaths:
+    - "http://railsgoat-web:3000/logout"
+    - "http://railsgoat-web:3000/admin/.+/delete_user.json"
+    - "http://railsgoat-web:3000/user.+\\.json"
+    - "http://railsgoat-web:3000/admin/.+/update_user.json"
     authentication:
       method: "browser"
       parameters:
         loginPageUrl: "http://railsgoat-web:3000"
         loginPageWait: 2
-        browserId: "firefox-headless"
+        browserId: "htmlunit"
       verification:
         method: "poll"
         loggedInRegex: "\\Q 200 OK\\E"
@@ -22,7 +26,7 @@ env:
         pollUrl: "http://railsgoat-web:3000/dashboard/home"
         pollPostData: ""
     sessionManagement:
-      method: "headers"
+      method: "cookie"
       parameters: {}
     technology:
       exclude: []
@@ -31,72 +35,118 @@ env:
       credentials:
         password: "citrusblend"
         username: "ken@metacorp.com"
+    - name: "admin@metacorp.com"
+      credentials:
+        password: "admin1234"
+        username: "admin@metacorp.com"
   parameters:
     failOnError: true
     failOnWarning: false
     progressToStdout: true
-
+  vars: {}
 jobs:
-  - type: spider                       # The traditional spider - fast but doesnt handle modern apps so well
-    parameters:
-      context: railsgoat               # String: Name of the context to spider, default: first context
-      user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
-      maxDuration: 15                 # Int: The max time in minutes the spider will be allowed to run for, default: 0 unlimited
-    # tests:
-    #   - name: 'Confirm railsgoat context is authenticated for traditional spider'
-    #     type: stats
-    #     statistic: 'stats.auth.configure.verification'
-    #     operator: '>='
-    #     value: 1
-    #     onFail: 'error'
-    #   - name: 'Confirm at least 1 successful authentication'
-    #     type: stats
-    #     statistic: 'stats.auth.success'
-    #     operator: '>='
-    #     value: 1
-    #     onFail: 'error'
-    #   - name: 'Confirm railsgoat context is using forms-based authentication'
-    #     type: stats
-    #     statistic: 'stats.auth.configure.auth.form'
-    #     operator: '>='
-    #     value: 1
-    #     onFail: 'error'
-  # - type: spiderAjax
-  #   parameters:
-  #     context: railsgoat
-  #     user: "ken@metacorp.com"
-  #     maxDuration: 20
-  - type: activeScan                   # The active scanner - this actively attacks the target so should only be used with permission
-    parameters:
-      context: railsgoat               # String: Name of the context to attack, default: first context
-      user: "ken@metacorp.com"         # String: An optional user to use for authentication, must be defined in the env
-      # policy:                          # String: Name of the scan policy to be used, default: Default Policy
-      # maxRuleDurationInMins:           # Int: The max time in minutes any individual rule will be allowed to run for, default: 0 unlimited
-      maxScanDurationInMins: 30        # Int: The max time in minutes the active scanner will be allowed to run for, default: 0 unlimited
-    tests:
-      - name: 'Confirm railsgoat context is authenticated for active scan'
-        type: stats
-        statistic: 'stats.auth.configure.verification'
-        operator: '>='
-        value: 1
-        onFail: 'error'
-      - name: 'Confirm at least 1 successful authentication'
-        type: stats
-        statistic: 'stats.auth.success'
-        operator: '>='
-        value: 1
-        onFail: 'error'
-      - name: 'Confirm railsgoat context is using forms-based authentication'
-        type: stats
-        statistic: 'stats.auth.configure.auth.form'
-        operator: '>='
-        value: 1
-        onFail: 'error'
-  - type: report                       # Report generation
-    parameters:
-      # template:                         # String: The template id, default : modern
-      # theme:                            # String: The template theme, default: the first theme defined for the template (if any)
-      reportDir: /zap/wrk
-      reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
-      reportTitle: RailsGoat Full Scan
-      reportDescription: Spider and scan RailsGoat
+- parameters:
+    scanOnlyInScope: true
+    enableTags: false
+    disableAllRules: false
+  rules: []
+  name: "passiveScan-config"
+  type: "passiveScan-config"
+- parameters:
+    context: "Railsgoat"
+    user: "ken@metacorp.com"
+    url: "http://railsgoat-web:3000"
+  name: "spider"
+  type: "spider"
+  tests:
+  - onFail: "INFO"
+    statistic: "automation.spider.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"
+    
+  #### Stat tests (post-scan) ####
+  - name: 'Confirm at least 1 successful railsgoat session token'
+    type: stats
+    statistic: 'stats.auth.detect.session._railsgoat_session'
+    operator: '>='
+    value: 1
+    onFail: 'WARN'
+- parameters:
+    context: "Railsgoat"
+    user: "ken@metacorp.com"
+    url: "http://railsgoat-web:3000"
+    maxDuration: 60
+    maxCrawlDepth: 10
+    numberOfBrowsers: 4
+    inScopeOnly: true
+    runOnlyIfModern: false
+    excludedElements: []
+  name: "spiderAjax"
+  type: "spiderAjax"
+  tests:
+  #### Stat tests (post-scan) ####
+  - onFail: "INFO"
+    statistic: "spiderAjax.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"    
+  - name: 'Confirm at least 1 successful railsgoat session token'
+    type: stats
+    statistic: 'stats.auth.detect.session._railsgoat_session'
+    operator: '>='
+    value: 1
+    onFail: 'WARN'
+- parameters: {}
+  name: "passiveScan-wait"
+  type: "passiveScan-wait"
+- parameters:
+    context: "Railsgoat"
+    user: "ken@metacorp.com"
+    policy: ""
+    maxRuleDurationInMins: 0
+    maxScanDurationInMins: 0
+  policyDefinition:
+    defaultStrength: "medium"
+    defaultThreshold: "medium"
+    rules: []
+  name: "activeScan"
+  type: "activeScan"
+  tests:
+    #### Stat tests (post-scan) ####
+    - name: 'Confirm at least 1 successful railsgoat session token'
+      type: stats
+      statistic: 'stats.auth.detect.session._railsgoat_session'
+      operator: '>='
+      value: 1
+      onFail: 'WARN'
+- parameters:
+    template: "modern"
+    theme: "technology"
+    reportDir: /zap/wrk
+    reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
+    reportTitle: RailsGoat Authenticated Scan
+    reportDescription: Authenticated spider + scan of RailsGoat
+  name: "report"
+  type: "report"
+  risks:
+  - "low"
+  - "medium"
+  - "high"
+  confidences:
+  - "low"
+  - "medium"
+  - "high"
+  - "confirmed"
+  sections:
+  - "passingrules"
+  - "instancecount"
+  - "alertdetails"
+  - "alertcount"
+  - "params"
+  - "chart"
+  - "statistics"
