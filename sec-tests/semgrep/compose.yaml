@@ -2,7 +2,7 @@ services:
   semgrep-railsgoat-scan:
     image: returntocorp/semgrep
     volumes:
-      - ../../railsgoat:/src  # Railsgoat source code
+      - ../../railsgoat/app:/src  # Railsgoat source code
       - ../..:/workspace          # For saving report
     command: semgrep
                 --metrics off
