@@ -5,10 +5,10 @@ services:
       - ../../railsgoat/app:/src  # Railsgoat source code
       - ../..:/workspace          # For saving report
     command: >
-      bash -c "semgrep
-                --config p/default
-                --metrics=off
-                --text
-                --output /workspace/railsgoat_semgrep_results.txt
-                /src
-              "
+      "semgrep
+        --config p/default
+        --metrics=off
+        --text
+        --output /workspace/railsgoat_semgrep_results.txt
+        /src
+      "
