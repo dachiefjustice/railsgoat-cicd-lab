@@ -1,0 +1,14 @@
+services:
+  semgrep-railsgoat-scan:
+    image: returntocorp/semgrep
+    volumes:
+      - ../../railsgoat/app:/src  # Railsgoat source code
+      - ../..:/workspace          # For saving report
+    command: >
+      bash -c "semgrep
+                --config p/default
+                --metrics=off
+                --text
+                --output /workspace/railsgoat_semgrep_results.txt
+                /src
+              "
