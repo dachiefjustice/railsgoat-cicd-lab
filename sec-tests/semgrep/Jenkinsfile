@@ -4,7 +4,7 @@ pipeline {
   agent any
   
   stages {
-    stage('semgrep-scan') {
+    stage('build') {
       steps {
         // Check out source code into the workspace, initializing RailsGoat submodule
         checkout scmGit(
@@ -14,6 +14,13 @@ pipeline {
             userRemoteConfigs: [[url: 'file:///vagrant']]
         )
 
+        // Pull semgrep image if needed
+        sh 'docker-compose --file $WORKSPACE/sec-tests/semgrep/compose.yaml build --pull'
+      }
+    }
+
+    stage('semgrep-scan') {
+      steps {
         // Run semgrep against Railsgoat (text output)
         sh 'docker-compose --file $WORKSPACE/sec-tests/semgrep/compose.yaml up semgrep-railsgoat-scan'
 
