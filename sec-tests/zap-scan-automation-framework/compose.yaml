@@ -20,8 +20,8 @@ services:
       - zap-reports:/zap-reports
     command: /bin/sh -c "chown 1000:1000 /zap-reports"
   zap-scan-automation-framework:
-    # image: ghcr.io/zaproxy/zaproxy:stable
-    image: ghcr.io/zaproxy/zaproxy:2.12.0
+    image: ghcr.io/zaproxy/zaproxy:stable
+    # image: ghcr.io/zaproxy/zaproxy:2.12.0
     command: "zap.sh
                 -cmd
                 -addonupdate
