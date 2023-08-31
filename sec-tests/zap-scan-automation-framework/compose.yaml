@@ -17,7 +17,7 @@ services:
       - zap-reports:/zap-reports
     command: /bin/sh -c "chown 1000:1000 /zap-reports"
   zap-scan-automation-framework:
-    image: ghcr.io/zaproxy/zaproxy:stable
+    image: ghcr.io/zaproxy/zaproxy:2.12.0 # avoid 2.13 DOM XSS issues; https://groups.google.com/g/zaproxy-users/c/mGG2exnJc_c/m/yUTCXFBKAgAJ
     command: bash -c "zap.sh -cmd -autorun /zap/zap-railsgoat.yml"
     volumes:
       - zap-reports:/zap/wrk/:rw
