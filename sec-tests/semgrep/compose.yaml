@@ -6,6 +6,7 @@ services:
       - ../..:/workspace          # For saving report
     command: semgrep
                 --config auto
+                --vim
                 --output /workspace/railsgoat_semgrep_results.txt
                 /src
   semgrep-railsgoat-scan-sarif:
