@@ -11,6 +11,7 @@
       - ca-certificates
       - software-properties-common
       - default-jre-headless
+      - htop
 
 - name: Allow file:// URLs with git (used in the lab for using repo via vagrant://)
   become: true
