@@ -32,6 +32,14 @@ services:
     depends_on:
       - railsgoat-web
       - zap-scan-initializer
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4000M
+        reservations:
+          cpus: '0.25'
+          memory: 500M
   zap-process-report:
     build: ./process-report
     volumes:
