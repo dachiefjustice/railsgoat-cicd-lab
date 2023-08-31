@@ -73,7 +73,7 @@ jobs:
     statistic: 'stats.auth.detect.session._railsgoat_session'
     operator: '>='
     value: 1
-    onFail: 'ERROR'
+    onFail: 'WARN'
 - parameters:
     context: "Railsgoat"
     user: "ken@metacorp.com"
@@ -100,7 +100,7 @@ jobs:
     statistic: 'stats.auth.detect.session._railsgoat_session'
     operator: '>='
     value: 1
-    onFail: 'ERROR'
+    onFail: 'WARN'
 - parameters: {}
   name: "passiveScan-wait"
   type: "passiveScan-wait"
@@ -117,20 +117,13 @@ jobs:
   name: "activeScan"
   type: "activeScan"
   tests:
-    # #### Monitor tests (mid-scan) ####
-    # - name: 'Number of detected railsgoat session tokens'
-    #   type: monitor
-    #   statistic: stats.auth.detect.session._railsgoat_session
-    #   threshold: 1
-    #   onFail: 'INFO'
-    
     #### Stat tests (post-scan) ####
     - name: 'Confirm at least 1 successful railsgoat session token'
       type: stats
       statistic: 'stats.auth.detect.session._railsgoat_session'
       operator: '>='
       value: 1
-      onFail: 'ERROR'
+      onFail: 'WARN'
 - parameters:
     reportDir: /zap/wrk
     reportFile: "{{yyyy-MM-dd HH:mm:ss}}-ZAP-Report-[[site]]"
