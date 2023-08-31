@@ -7,8 +7,13 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        // Check out source code into the workspace
-        checkout scm
+        // Check out source code into the workspace, initializing RailsGoat submodule
+        checkout scmGit(
+          branches: [[name: '*/master']],
+          extensions:
+            [submodule(recursiveSubmodules: true, reference: '')],
+            userRemoteConfigs: [[url: 'file:///vagrant']]
+        )
         
         // Build the Brakeman container
         sh 'docker build -t brakeman:$BUILD_TAG $WORKSPACE/sec-tests/brakeman'
