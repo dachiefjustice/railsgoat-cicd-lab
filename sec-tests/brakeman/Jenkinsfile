@@ -19,7 +19,7 @@ pipeline {
     }
 
     stage('brakeman-scan') {
-      steps {s
+      steps {
         // Run brakeman against RailsGoat submodule, output results to workspace
         sh 'docker-compose --file $WORKSPACE/sec-tests/brakeman/compose.yaml up brakeman-railsgoat-scan'
       }
