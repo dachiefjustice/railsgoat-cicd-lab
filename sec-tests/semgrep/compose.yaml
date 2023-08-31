@@ -6,8 +6,6 @@ services:
       - ../..:/workspace          # For saving report
     command: semgrep
                 --config auto
-                --text
-                --max-chars-per-line 200
                 --output /workspace/railsgoat_semgrep_results.txt
                 /src
   semgrep-railsgoat-scan-sarif:
