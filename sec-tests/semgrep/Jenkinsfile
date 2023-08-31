@@ -4,7 +4,7 @@ pipeline {
   agent any
   
   stages {
-    stage('build') {
+    stage('semgrep-scan') {
       steps {
         // Check out source code into the workspace, initializing RailsGoat submodule
         checkout scmGit(
@@ -14,8 +14,16 @@ pipeline {
             userRemoteConfigs: [[url: 'file:///vagrant']]
         )
         
+        // Mark Railsgoat as safe
+        sh 'cd $WORKSPACE/railsgoat && git config --global --add safe.directory $(pwd)'
+
         // Run semgrep against Railsgoat
-        sh 'docker run -v $WORKSPACE/railsgoat:/src returntocorp/semgrep semgrep --config=auto > $WORKSPACE/railsgoat_semgrep_results.txt'
+        sh 'docker run
+              -v $WORKSPACE/railsgoat:/src
+              returntocorp/semgrep semgrep
+              --config=auto
+              --text
+                > $WORKSPACE/railsgoat_semgrep_results.txt'
       }
     }
   }
