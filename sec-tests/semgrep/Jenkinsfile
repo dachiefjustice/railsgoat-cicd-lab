@@ -18,7 +18,7 @@ pipeline {
         sh 'cd $WORKSPACE/railsgoat && git config --global --add safe.directory $(pwd)'
 
         // Run semgrep against Railsgoat
-        sh 'docker run -v $WORKSPACE/railsgoat/app:/src returntocorp/semgrep semgrep --metrics=off --text --config=auto /src > $WORKSPACE/railsgoat_semgrep_results.txt'
+        sh 'docker run -v $WORKSPACE/railsgoat/app:/src returntocorp/semgrep semgrep --metrics=off --text --config p/default /src > $WORKSPACE/railsgoat_semgrep_results.txt'
       }
     }
   }
