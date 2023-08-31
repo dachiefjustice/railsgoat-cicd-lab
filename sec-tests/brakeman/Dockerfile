@@ -4,5 +4,5 @@ FROM alpine:latest
 RUN apk add --no-cache --update ruby ruby-rdoc ruby-irb && \
     gem install brakeman
 
-# Interactive shell by default
-CMD ["/bin/sh"]
+# brakeman help by default
+CMD ["/usr/bin/brakeman -h"]

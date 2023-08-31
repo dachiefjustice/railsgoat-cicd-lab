@@ -1,0 +1,11 @@
+services:
+  brakeman-railsgoat-scan:
+    build: .
+    volumes:
+      - ../../railsgoat:/src  # Railsgoat source code
+      - ../..:/workspace      # For saving report
+    command: brakeman
+                --format html
+                --routes
+                --output /workspace/railsgoat_brakeman_report.html
+                /src

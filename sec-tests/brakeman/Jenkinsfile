@@ -16,10 +16,18 @@ pipeline {
         )
         
         // Build the Brakeman container
-        sh 'docker build -t brakeman:$BUILD_TAG $WORKSPACE/sec-tests/brakeman'
+        // sh 'docker build -t brakeman:$BUILD_TAG $WORKSPACE/sec-tests/brakeman'
+        sh 'docker-compose --file $WORKSPACE/sec-tests/brakeman/compose.yaml build'
+      }
+    }
+
+    stage('brakeman-scan') {
+      steps {
+        // Run brakeman against RailsGoat submodule, output results to workspace
+        // sh 'set +e; docker run -v $WORKSPACE:/brakeman_vol brakeman:$BUILD_TAG brakeman -a -f html -o /brakeman_vol/railsgoat_brakeman_report.html /brakeman_vol/railsgoat; if [ "$?" -eq "3" ]; then exit 0; else exit 1; fi'
         
         // Run brakeman against RailsGoat submodule, output results to workspace
-        sh 'set +e; docker run -v $WORKSPACE:/brakeman_vol brakeman:$BUILD_TAG brakeman -a -f html -o /brakeman_vol/railsgoat_brakeman_report.html /brakeman_vol/railsgoat; if [ "$?" -eq "3" ]; then exit 0; else exit 1; fi'
+        sh 'docker-compose --file $WORKSPACE/sec-tests/brakeman/compose.yaml up brakeman-railsgoat-scan'
       }
     }
   }
