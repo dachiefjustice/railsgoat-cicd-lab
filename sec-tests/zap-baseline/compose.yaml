@@ -11,7 +11,7 @@ services:
     volumes:
       - ../../railsgoat:/myapp
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       - COMPOSE_SERVICE_NAME=railsgoat-web  # https://danielabaron.me/blog/rails-blocked-host-docker-fix/
   zap-scan-initializer: # solve docker compose volume perms issue: https://github.com/zaproxy/zaproxy/issues/6993
@@ -21,7 +21,7 @@ services:
     command: /bin/sh -c "chown 1000:1000 /zap-reports"
   zap-scan-baseline:
     image: ghcr.io/zaproxy/zaproxy:stable
-    command: bash -c "zap-baseline.py -t http://railsgoat-web:3000 -r railsgoat-zap-baseline.html"
+    command: bash -c "zap-baseline.py -t http://railsgoat-web:3001 -r railsgoat-zap-baseline.html"
     volumes:
       - zap-reports:/zap/wrk/:rw
     depends_on:
