@@ -42,7 +42,7 @@ pipeline {
       sh 'docker-compose --file $WORKSPACE/sec-tests/zap-baseline/compose.yaml up zap-copy-report-to-workspace'
 
       // Archive reports with the build
-      archiveArtifacts artifacts: 'railsgoat-zap-baseline.html', fingerprint: true
+      archiveArtifacts artifacts: 'railsgoat-zap-baseline.html'
 
       // Clean up containers (remove containers and volumes)
       sh 'docker-compose --file $WORKSPACE/sec-tests/zap-baseline/compose.yaml down --volumes'

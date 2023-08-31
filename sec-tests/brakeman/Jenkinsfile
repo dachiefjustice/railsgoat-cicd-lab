@@ -28,7 +28,7 @@ pipeline {
   
   post {
     always {
-      archiveArtifacts artifacts: 'railsgoat_brakeman_report.html', fingerprint: true
+      archiveArtifacts artifacts: 'railsgoat_brakeman_report.html'
     }
   } 
 }
