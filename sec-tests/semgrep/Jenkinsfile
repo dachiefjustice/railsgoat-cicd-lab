@@ -15,7 +15,7 @@ pipeline {
         )
 
         // Run semgrep against Railsgoat
-        sh 'docker-compose up --file $WORKSPACE/sec-tests/semgrep/compose.yaml semgrep-railsgoat-scan'
+        sh 'docker-compose --file $WORKSPACE/sec-tests/semgrep/compose.yaml up semgrep-railsgoat-scan'
       }
     }
   }
