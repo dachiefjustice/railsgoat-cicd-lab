@@ -4,7 +4,7 @@ services:
     volumes:
       - ../../railsgoat/app:/src  # Railsgoat source code
       - ../..:/workspace          # For saving report
-    command:  semgrep
+    command: semgrep ci
                 --config p/default
                 --metrics=off
                 --text
