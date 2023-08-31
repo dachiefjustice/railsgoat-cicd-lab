@@ -14,8 +14,11 @@ pipeline {
             userRemoteConfigs: [[url: 'file:///vagrant']]
         )
 
-        // Run semgrep against Railsgoat
+        // Run semgrep against Railsgoat (text output)
         sh 'docker-compose --file $WORKSPACE/sec-tests/semgrep/compose.yaml up semgrep-railsgoat-scan'
+
+        // Run semgrep against Railsgoat (SARIF output)
+        sh 'docker-compose --file $WORKSPACE/sec-tests/semgrep/compose.yaml up semgrep-railsgoat-scan-sarif'
       }
     }
   }
@@ -23,6 +26,7 @@ pipeline {
   post {
     always {
       archiveArtifacts artifacts: 'railsgoat_semgrep_results.txt'
+      archiveArtifacts artifacts: 'railsgoat_semgrep_results_sarif.json'
     }
   }
 }

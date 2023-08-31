@@ -6,6 +6,16 @@ services:
       - ../..:/workspace          # For saving report
     command: semgrep
                 --config auto
-                --sarif
+                --text
                 --output /workspace/railsgoat_semgrep_results.txt
+                /src
+  semgrep-railsgoat-scan-sarif:
+    image: returntocorp/semgrep
+    volumes:
+      - ../../railsgoat/app:/src  # Railsgoat source code
+      - ../..:/workspace          # For saving report
+    command: semgrep
+                --config auto
+                --sarif
+                --output /workspace/railsgoat_semgrep_results_sarif.json
                 /src
