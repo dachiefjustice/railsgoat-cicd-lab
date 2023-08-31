@@ -32,7 +32,7 @@ pipeline {
   post {
     always {
       // Stop running containers
-      sh 'cd $WORKSPACE/sec-tests/zap-hold-open && docker-compose stop'
+      sh 'docker-compose --file $WORKSPACE/sec-tests/zap-hold-open/compose.yaml stop'
     }
   } 
 }

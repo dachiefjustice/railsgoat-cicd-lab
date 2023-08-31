@@ -32,10 +32,10 @@ pipeline {
   post {
     always {
       // Prepare ZAP report
-      sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose up zap-process-report'
+      sh 'docker-compose --file $WORKSPACE/sec-tests/zap-scan-automation-framework/compose.yaml up zap-process-report'
 
       // Clean up containers (remove containers and volumes)
-      sh 'cd $WORKSPACE/sec-tests/zap-scan-automation-framework && docker-compose down --volumes'
+      sh 'docker-compose --file $WORKSPACE/sec-tests/zap-scan-automation-framework/compose.yaml down --volumes'
     }
   } 
 }
