@@ -46,10 +46,10 @@ EDIT: discarded in favor of ZAP
 [x] Update docker-compose to latest
 ~~[x] Update arachni to latest~~
 [x] Add ZAP scans
+[x] Add Semgrep job
 
 ## Discarded
 [ ] Fix Arachni scan (using ZAP instead; more reliably maintained, problems with Arachni Chrome/Chromedriver version)
 
 # Future ideas
 [ ] Add Nuclei job
-[ ] Add Semgrep job
