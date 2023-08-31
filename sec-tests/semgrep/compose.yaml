@@ -5,9 +5,8 @@ services:
       - ../../railsgoat/app:/src  # Railsgoat source code
       - ../..:/workspace          # For saving report
     command: semgrep
+                --metrics off
                 --config p/default
-                --metrics=off
-                --verbose
                 --text
                 --output /workspace/railsgoat_semgrep_results.txt
                 /src
