@@ -6,6 +6,6 @@ services:
       - ../..:/workspace          # For saving report
     command: semgrep
                 --config auto
-                --text
+                --sarif
                 --output /workspace/railsgoat_semgrep_results.txt
                 /src
