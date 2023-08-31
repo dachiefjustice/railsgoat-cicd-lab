@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
   # Forward Jenkins (8080) web interface to the host
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
 
-  # Plenty of RAM
+  # Plenty of RAM (for ZAP scan)
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "6144"
   end
@@ -15,4 +15,7 @@ Vagrant.configure("2") do |config|
     ansible.install = true
     ansible.playbook = "playbook-vagrant.yml"
   end
+
+  # Windows-host specific workaround for ansible_local provisioner to use the project's ansible.cfg
+  config.vm.synced_folder ".", "/vagrant",  mount_options: ["dmode=775,fmode=755"]
 end
