@@ -9,7 +9,7 @@ pipeline {
       steps {
         // Check out source code into the workspace, initializing RailsGoat submodule
         checkout scmGit(
-          branches: [[name: '*/master']],
+          branches: [[name: '*/main']],
           extensions:
             [submodule(recursiveSubmodules: true, reference: '')],
             userRemoteConfigs: [[url: 'file:///vagrant']]
