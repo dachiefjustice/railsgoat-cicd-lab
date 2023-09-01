@@ -7,13 +7,14 @@ cd railsgoat-cicd-lab
 vagrant up
 ```
 
-![vagrant ssh](screenshots-new/01-clone-and-vagrant-up.png)
+![Clone and Vagrant Up](screenshots-new/01-clone-and-vagrant-up.png)
 
 You'll see a lot of output as Vagrant provisions the VM:
 1) Vagrant installs Ansible (with the `ansible_local` provisioner)
 2) Ansible installs and configure Jenkins + Jenkins plugins, Docker, and Docker Compose.
 
-2. Now Jenkins is installed, and you can you 
+The VM is set up once you return to a shell prompt preceded by a welcome message:
+![VM Welcome Message](screenshots-new/02-vagrant-welcome.png)
 
 ## Static Analysis
 ### Brakeman
