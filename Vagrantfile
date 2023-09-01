@@ -11,11 +11,9 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
 
   ## To access RailsGoat from your Vagrant host host:
-  ##   1) Uncomment the config.vm.network "forwarded_port" line below to open port 3002 
-  ##   2) Apply the configuration: run `vagrant reload`
-  ##   3) Run the hold-open job in Jenkins to start RailsGoat on port 3002
-  ##   4) Point your browser or other HTTP tool at http://localhost:3002
-  # config.vm.network "forwarded_port", guest: 3002, host: 3002, host_ip: "127.0.0.1"
+  ##   1) Run the hold-open job in Jenkins to start RailsGoat on port 3002
+  ##   2) Point your browser or other HTTP tool at http://localhost:3002
+  config.vm.network "forwarded_port", guest: 3002, host: 3002, host_ip: "127.0.0.1"
   
   ##### PROVISIONING #####
   config.vm.provision "ansible_local" do |ansible|
