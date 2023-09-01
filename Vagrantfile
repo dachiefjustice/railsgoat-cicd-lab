@@ -20,6 +20,7 @@ Vagrant.configure("2") do |config|
     ansible.install = true
     ansible.playbook = "playbook-vagrant.yml"
   end
+  config.vm.post_up_message = "RailsGoat CI/CD box, based on Debian. Project homepage: https://github.com/dachiefjustice/railsgoat-cicd-lab"
 
   # Windows-host specific workaround for ansible_local provisioner to use the project's ansible.cfg
   config.vm.synced_folder ".", "/vagrant",  mount_options: ["dmode=775,fmode=755"]
