@@ -1,5 +1,5 @@
 # RailsGoat CI/CD Lab
-This lab teaches developers and security people how to integrate static analysis (SAST) and dynamic analysis (DAST) into a CI/CD pipeline. It demonstrates patterns you can use to perform vulnerability analysis in your own pipelines.
+This lab teaches developers and security people how to integrate static analysis (SAST) and dynamic analysis (DAST) into a CI/CD pipeline. It gives examples and patterns you can use to find security vulnerabilities in your own software/pipelines.
 
 It's based on [OWASP RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails app intended for training. Props to the RailsGoat authors and contributors!
 
