@@ -31,6 +31,11 @@ Once `vagrant up` is done jump to the [lab walkthrough](docs/lab-walkthrough.md)
   2) Run `vagrant reload`
   3) Create and run a Jenkins job from the [zap-hold-open Jenkinsfile](sec-tests/zap-hold-open/Jenkinsfile).
   4) Open http://localhost:3002 in your browser (or other HTTP tools)
+- Keep an eye on the VM's resources using `htop` within the VM:
+```sh
+vagrant ssh
+htop
+```
 - You can adjust how much RAM the VM uses in the `Vagrantfile`:
 ```ruby
 config.vm.provider "virtualbox" do |vb|
