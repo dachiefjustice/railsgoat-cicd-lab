@@ -28,8 +28,59 @@ Use `htop` to explore system resources and processes (press `q` to exit afterwar
 ![htop](screenshots-new/05-htop.png)
 
 ### Jenkins
+#### Initial Login
 Log into the Jenkins web interface at http://localhost:8080 with the default credentials (`admin/admin`):
 ![Jenkins login](screenshots-new/06-jenkins-login-page.png)
+
+### RailsGoat
+#### Launch RailsGoat via Jenkins
+It's time set up the lab's first Jenkins job. This lab uses a bunch of pre-made Jenkins jobs for security analysis.
+
+Start by making a job that runs RailsGoat in a container. Click `Create a job`:
+![Create first Jenkins job](screenshots-new/07-jenkins-create-first-job.png)
+
+Name the job `hold-RailsGoat-open` (or whatever you like). Select "Multibranch Pipeline" as the job type, and press OK:
+![Create hold-RailsGoat-open](screenshots-new/08-jenkins-create-multibranch-pipeline.png)
+
+On the next screen name the job (whatever you like, `hold-RailsGoat-open` in the screenshot). Add a branch source specifying `file:///vagrant` as the `Project Repository`:
+![Add branch source](screenshots-new/09-jenkins-add-branch-source.png)
+
+Scroll down to the `Build Configuration` section and specify [`sec-tests/hold-open/Jenkinsfile`](../sec-tests/semgrep/Jenkinsfile) as the `Script Path`. Then press Save:
+![Specify Jenkinsfile path](screenshots-new/10-jenkins-specify-Jenkinsfile-path.png)
+
+After pressing Save, Jenkins scans the repository and starts a build. Click the `#1 (hold-open)` to open that build:
+![Jenkins starts build](screenshots-new/11-jenkins-scan-multibranch-pipeline.png)
+
+Then click the `Console Output` button:
+![Console output](screenshots-new/12-jenkins-console-output.png)
+
+Scroll to the bottom. Notice that Jenkins is sitting on a line like `hold-open-zap-holdopen-with-railsgoat-1`:
+![Holding RailsGoat open](screenshots-new/13-jenkins-holding-open.png)
+
+This means that Jenkins is running RailsGoat for you. Confirm this by opening a new tab and browsing to http://localhost:3002, and you should see the RailsGoat login page:
+![RailsGoat login page](screenshots-new/14-railsgoat-login-page.png)
+
+#### Hold-Open Job Explainer
+A few things worth pointing out about this Jenkins job:
+- This job's `Jenkinsfile` uses `docker-compose` to launch RailsGoat:
+```
+steps {
+  // Hold ZAP and RailsGoat open together
+  sh 'docker-compose --file $WORKSPACE/sec-tests/hold-open/compose.yaml up zap-holdopen-with-railsgoat'
+}
+```
+
+The `compose.yaml` file the job uses defines the components and configuration for a containerized RailsGoat (and ZAP).
+
+This job will hold RailsGoat open so you can freely browse RailsGoat by visiting http://localhost:3002. From there you cancreate an account, search for vulnerabilities manually, and generally get used to it.
+
+This hold-open job also includes ZAP container, which can analyze RailsGoat for vulnerabilities. You'll automate this later in the lab; for now, use ZAP to scan RailsGoat manually.
+
+Get a shell in the VM, and use `docker ps` to find the running ZAP container:
+```sh
+vagrant ssh
+docker ps
+```
 
 ## Static Analysis
 ### Brakeman
