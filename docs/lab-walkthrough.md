@@ -85,12 +85,3 @@ Of course, things are different in this lab environment vs. in a real-world pipe
 - In the lab, tool-generated reports are simply saved with the job. This is a good start; but in a real pipeline with mature security process, you might parse the tool output, filter false positives/already-known issues, perhaps feed the resulting issues in a defect tracking system.
 - In the lab, containers run as root to avoid permission problems writing reports to the Jenkins workspace. Best practice is to avoid privileged containers; security impact of and solutions to this vary depending on your environment. It's generally most important to avoid running root-privileged containers in production.
 
-## Notes & Tips
-- There are lots of moving parts (automatic download/installation from third-party sources) in this lab. Not much version pinning, it's built to stay up-to-date (with the tradeoff that things might break unexpectedly).
-- I've sprinkled explanatory comments throughout the lab's source files.
-- If you hit performance issues or timeouts with the Arachni scan, try either re-running the Jenkins job (I've seen it work after failing the first time with no changes) or increasing the memory allocated to the VM in the `Vagrantfile`:
-```
-config.vm.provider "virtualbox" do |vb|
-  vb.memory = "4096"
-end
-```
