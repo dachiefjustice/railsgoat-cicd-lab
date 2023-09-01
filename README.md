@@ -1,6 +1,8 @@
 # RailsGoat CI/CD Lab
 This free and open-source lab teaches developers and security practitioners how to integrate static analysis (SAST) and dynamic analysis (DAST) into a Jenkins CI/CD pipeline using infrastructure-as-code. It's based on [RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails app intended for training.
 
+This lab is tested against current versions of Linux, Windows, Vagrant, and Virtualbox. It should work on Mac OS as well.
+
 ## Ways To Use This Lab
 - Follow the [walkthrough](docs/lab-walkthrough.md). You'll deploy a Jenkins server and run jobs to perform vulnerability analysis. The lab covers SAST (with [semgrep](https://semgrep.dev/) and [brakeman](https://brakemanscanner.org/)) and DAST (with [ZAP](https://www.zaproxy.org/)).
 - Adapt the lab's code for your own purposes. It models these patterns:
@@ -28,7 +30,7 @@ vagrant up
 Once `vagrant up` is done jump to the [lab walkthrough](docs/lab-walkthrough.md).
 
 # Lab Tips
-- If you want to run RailsGoat and access it directly from your browser:
+- Run RailsGoat and access it directly from your browser:
   1) Uncomment the line in the `Vagrantfile` that looks like `config.vm.network "forwarded_port", guest: 3002, host: 3002, host_ip: "127.0.0.1"`
   2) Run `vagrant reload`
   3) Create and run a Jenkins job from the [hold-open Jenkinsfile](sec-tests/hold-open/Jenkinsfile).
@@ -46,7 +48,8 @@ end
 ```
 
 To apply the changes run `vagrant reload` after adjusting this or other settings in the `Vagrantfile`.
-- Tested on Linux and Windows with current versions of Vagrant and Virtualbox; should work on Mac OS as well
+
+
 
 # Lab Tech Stack
 | Software                  | Purpose                                 | 
