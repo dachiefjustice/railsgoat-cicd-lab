@@ -1,20 +1,35 @@
 # Lab Walkthrough
 ## Initial Setup
-On a host meeting the prereqs, clone this repo and start the VM:
-```sh
-git clone https://github.com/dachiefjustice/railsgoat-cicd-lab.git
-cd railsgoat-cicd-lab
-vagrant up
-```
+Open the [README](../README.md) and follow the basic usage instructions to get started:
 
 ![Clone and Vagrant Up](screenshots-new/01-clone-and-vagrant-up.png)
 
-You'll see a lot of output as Vagrant provisions the VM:
-1) Vagrant installs Ansible (with the `ansible_local` provisioner)
+After running `vagrant up,` you'll see a lot of output as Vagrant provisions the VM:
+1) Vagrant installs Ansible (with the `ansible_local` provisioner's automatic installation)
 2) Ansible installs and configure Jenkins + Jenkins plugins, Docker, and Docker Compose.
 
 The VM is set up once you return to a shell prompt preceded by a welcome message:
 ![VM Welcome Message](screenshots-new/02-vagrant-welcome.png)
+
+## Explore The Lab Environment
+### Command Line
+Get a shell in the lab machine, and notice that you can access the lab's code via `/vagrant` (Vagrant does this automatically as part of `vagrant up`). The Jenkins jobs you'll create to find security issues uses this.
+
+```sh
+vagrant ssh
+ls -la /vagrant
+```
+![Vagrant SSH and /vagrant](screenshots-new/03-vagrant-ssh.png)
+
+Check that Jenkins is running with `systemctl status jenkins.service` (press `q` to exit the Jenkins status info after confirming that Jenkins is loaded):
+![Jenkins status](screenshots-new/04-check-jenkins.png)
+
+Use `htop` to explore system resources and processes (press `q` to exit afterwards):
+![htop](screenshots-new/05-htop.png)
+
+### Jenkins
+Log into the Jenkins web interface at http://localhost:8080 with the default credentials (`admin/admin`):
+![Jenkins login](screenshots-new/06-jenkins-login-page.png)
 
 ## Static Analysis
 ### Brakeman
