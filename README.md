@@ -34,7 +34,7 @@ Once `vagrant up` is done jump to the [lab walkthrough](docs/lab-walkthrough.md)
 - You can adjust how much RAM the VM uses in the `Vagrantfile`:
 ```ruby
 config.vm.provider "virtualbox" do |vb|
-  vb.memory = "4096"
+  vb.memory = "6144" # for 6GB of RAM
 end
 ```
 
