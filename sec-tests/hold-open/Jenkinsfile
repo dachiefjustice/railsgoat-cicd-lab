@@ -17,14 +17,14 @@ pipeline {
         )
 
         // Build required containers
-        sh 'docker-compose --file $WORKSPACE/sec-tests/zap-hold-open/compose.yaml build'
+        sh 'docker-compose --file $WORKSPACE/sec-tests/hold-open/compose.yaml build'
       }
     }
 
     stage('hold-open') {
       steps {
         // Hold ZAP and RailsGoat open together
-        sh 'docker-compose --file $WORKSPACE/sec-tests/zap-hold-open/compose.yaml up zap-holdopen-with-railsgoat'
+        sh 'docker-compose --file $WORKSPACE/sec-tests/hold-open/compose.yaml up zap-holdopen-with-railsgoat'
       }
     }
   }
@@ -32,7 +32,7 @@ pipeline {
   post {
     always {
       // Stop running containers
-      sh 'docker-compose --file $WORKSPACE/sec-tests/zap-hold-open/compose.yaml stop'
+      sh 'docker-compose --file $WORKSPACE/sec-tests/hold-open/compose.yaml stop'
     }
   } 
 }
