@@ -1,23 +1,19 @@
 # Lab Walkthrough
 ## Initial Setup
-1. On a host meeting the prereqs, clone this repo and start the VM:
+On a host meeting the prereqs, clone this repo and start the VM:
 ```sh
 git clone https://github.com/dachiefjustice/railsgoat-cicd-lab.git
 cd railsgoat-cicd-lab
 vagrant up
 ```
-2. `cd` into the cloned repo, `vagrant up`. Good time to grab a coffee, lots of downloading and installing is about to happen.
-3. Once the Vagrant VM is done setting up, `vagrant ssh` in. You'll know it's done once the previous `vagrant up` returns to a prompt in your shell.
-![vagrant ssh](screenshots/02_vagrantssh.png)
-4. Time to set up Jenkins, which is running on port 8080 in the VM and is exposed from the VM to your Vagrant host. Open http://localhost:8080 in a browser on your Vagrant host.
-5. Jenkins sets a random initial password, you'll need this to log in. In the VM `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`, copy/paste into the browser, and move to the next screen.
-![jenkins initial pw](screenshots/04_jenkinsInitialLogin.png)
-6. Install the suggested plugins, the lab makes use of some of them (notably Pipeline and Git).
-![jenkins default plugins](screenshots/05_installSuggestedPlugins.png)
-![jenkins installing plugins](screenshots/06_suggestedPluginsInstalling.png)
-7. Set up an administrative user, using whatever credentials/info you like.
-![jenkins setup admin user](screenshots/07_setUpAdminUser.png)
-8. After setting up a Jenkins admin user, click the "Start using Jenkins" button on the next screen.
+
+![vagrant ssh](screenshots-new/01-clone-and-vagrant-up.png)
+
+You'll see a lot of output as Vagrant provisions the VM:
+1) Vagrant installs Ansible (with the `ansible_local` provisioner)
+2) Ansible installs and configure Jenkins + Jenkins plugins, Docker, and Docker Compose.
+
+2. Now Jenkins is installed, and you can you 
 
 ## Static Analysis
 ### Brakeman
