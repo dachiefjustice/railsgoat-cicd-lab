@@ -31,10 +31,8 @@ Once `vagrant up` is done jump to the [lab walkthrough](docs/lab-walkthrough.md)
 
 # Lab Tips
 - Run RailsGoat and access it directly from your browser:
-  1) Uncomment the line in the `Vagrantfile` that looks like `config.vm.network "forwarded_port", guest: 3002, host: 3002, host_ip: "127.0.0.1"`
-  2) Run `vagrant reload`
-  3) Create and run a Jenkins job from the [hold-open Jenkinsfile](sec-tests/hold-open/Jenkinsfile).
-  4) Open http://localhost:3002 in your browser (or other HTTP tools)
+  1) Create and run a Jenkins job from the [hold-open Jenkinsfile](sec-tests/hold-open/Jenkinsfile).
+  2) Open http://localhost:3002 in your browser (or other HTTP tools)
 - Keep an eye on the VM's resource usage and processes using `htop`:
 ```sh
 vagrant ssh
