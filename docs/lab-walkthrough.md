@@ -13,7 +13,7 @@ The VM is set up once you return to a shell prompt preceded by a welcome message
 
 ## Explore The Lab Environment
 ### Command Line
-Get a shell in the lab machine, and notice that you can access the lab's code via `/vagrant` (Vagrant does this automatically as part of `vagrant up`). The Jenkins jobs you'll create to find security issues uses this.
+Get a shell in the lab machine, and notice that you can access the lab's code via `/vagrant` (Vagrant performs this mapping automatically during `vagrant up`). The Jenkins jobs you'll create to find security issues use this mapping.
 
 ```sh
 vagrant ssh
@@ -48,7 +48,7 @@ On the next screen name the job (whatever you like, `hold-RailsGoat-open` in the
 Scroll down to the `Build Configuration` section and specify [`sec-tests/hold-open/Jenkinsfile`](../sec-tests/semgrep/Jenkinsfile) as the `Script Path`. Then press Save:
 ![Specify Jenkinsfile path](screenshots-new/10-jenkins-specify-Jenkinsfile-path.png)
 
-After pressing Save, Jenkins scans the repository and starts a build. Click the `#1 (hold-open)` to open that build:
+After pressing Save, Jenkins scans the repository and starts a build. Click the `#1 (hold-open)` link to open that build:
 ![Jenkins starts build](screenshots-new/11-jenkins-scan-multibranch-pipeline.png)
 
 Then click the `Console Output` button:
@@ -61,8 +61,7 @@ This means that Jenkins is running RailsGoat for you. Confirm this by opening a 
 ![RailsGoat login page](screenshots-new/14-railsgoat-login-page.png)
 
 #### Hold-Open Job Explainer
-A few things worth pointing out about this Jenkins job:
-- This job's `Jenkinsfile` uses `docker-compose` to launch RailsGoat:
+A few things worth pointing out about this Jenkins job. This job's `Jenkinsfile` uses `docker-compose` to launch RailsGoat:
 ```
 steps {
   // Hold ZAP and RailsGoat open together
@@ -70,17 +69,39 @@ steps {
 }
 ```
 
-The `compose.yaml` file the job uses defines the components and configuration for a containerized RailsGoat (and ZAP).
+[`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml) defines the components and configuration for a containerized RailsGoat and ZAP setup.
 
-This job will hold RailsGoat open so you can freely browse RailsGoat by visiting http://localhost:3002. From there you cancreate an account, search for vulnerabilities manually, and generally get used to it.
+This job will hold RailsGoat open so you can browse it by visiting http://localhost:3002. From there you can create an account, search for vulnerabilities manually, and generally get used to it.
 
-This hold-open job also includes ZAP container, which can analyze RailsGoat for vulnerabilities. You'll automate this later in the lab; for now, use ZAP to scan RailsGoat manually.
+This hold-open job also includes a ZAP container which can analyze RailsGoat for vulnerabilities. You'll automate this later in the lab.
 
-Get a shell in the VM, and use `docker ps` to find the running ZAP container:
+For now, use ZAP to scan RailsGoat manually. Get a shell in the VM, and use `docker ps` to find the running ZAP container's ID:
 ```sh
 vagrant ssh
 docker ps
 ```
+![ZAP container ID](screenshots-new/15-find-zap-container.png)
+
+Copy the container ID (`94572b01272a` in the screenshot, yours will be different). Now paste the container ID into this command:
+```sh
+docker exec -it <your-ZAP-container-ID> bash
+```
+
+Now your shell is inside the ZAP container and can scan RailsGoat. Start a baseline scan by issung this command:
+```sh
+./zap-baseline.py -t http://railsgoat-web:3002
+```
+![ZAP manual baseline scan](screenshots-new/16-manual-zap-baseline.png)
+
+http://railsgoat-web:3002 will work inside the container thanks to Docker Compose. The scan will take a minute or two to complete, and point out some basic security issues:
+![Baseline scan results](screenshots-new/17-zap-baseline-results.png)
+
+Take a note of how these issues aren't very high-impact -- no SQL injection, cross-site scripting, etc. This is because we haven't configured ZAP to perform a detailed, authenticated scan. That'll happen later in the lab.
+
+Back in the browser, cancel the `hold-RailsGoat-open` job:
+![Cancel hold-RailsGoat-Open job](screenshots-new/18-cancel-hold-open-job.png)
+
+Now you're ready to start automating SAST and DAST via Jenkins.
 
 ## Static Analysis
 ### Brakeman
