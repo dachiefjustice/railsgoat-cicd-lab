@@ -96,7 +96,7 @@ Now your shell is inside the ZAP container and can scan RailsGoat. Start a basel
 http://railsgoat-web:3002 will work inside the container thanks to Docker Compose. The scan will take a minute or two to complete, and point out some basic security issues:
 ![Baseline scan results](screenshots-new/17-zap-baseline-results.png)
 
-Take a note of how these issues aren't very high-impact -- no SQL injection, cross-site scripting, etc. This is because we haven't configured ZAP to perform a detailed, authenticated scan. That'll happen later in the lab.
+These issues are medium or low risk -- no SQL injection, cross-site scripting, no truly severe vulnerabilities. This is because we haven't configured ZAP to perform a detailed, authenticated scan. That'll happen later in the lab.
 
 Back in the browser, cancel the `hold-RailsGoat-open` job:
 ![Cancel hold-RailsGoat-Open job](screenshots-new/18-cancel-hold-open-job.png)
