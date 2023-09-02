@@ -13,7 +13,7 @@ The VM is set up once you return to a shell prompt preceded by a welcome message
 
 ## Explore The Lab Environment
 ### Command Line
-Get a shell in the lab machine, and notice that you can access the lab's code via `/vagrant` (Vagrant performs this mapping automatically during `vagrant up`). The Jenkins jobs you'll create to find security issues use this mapping.
+Get a shell in the lab machine, and notice that you can access the lab's code via `/vagrant` (Vagrant performs this mapping automatically during `vagrant up`). This lab's Jenkins jobs use the `/vagrant` mapping.
 
 ```sh
 vagrant ssh
@@ -21,7 +21,7 @@ ls -la /vagrant
 ```
 ![Vagrant SSH and /vagrant](screenshots-new/03-vagrant-ssh.png)
 
-Check that Jenkins is running with `systemctl status jenkins.service` (press `q` to exit the Jenkins status info after confirming that Jenkins is loaded):
+Check that Jenkins is running with `systemctl status jenkins.service` (press `q` to exit after confirming that Jenkins is loaded):
 ![Jenkins status](screenshots-new/04-check-jenkins.png)
 
 Use `htop` to explore system resources and processes (press `q` to exit afterwards):
@@ -34,7 +34,7 @@ Log into the Jenkins web interface at http://localhost:8080 with the default cre
 
 ### RailsGoat
 #### Launch RailsGoat via Jenkins
-It's time set up the lab's first Jenkins job. This lab uses a bunch of pre-made Jenkins jobs for security analysis.
+It's time set up the first Jenkins job! This lab uses a bunch of pre-made Jenkins jobs for security analysis.
 
 Start by making a job that runs RailsGoat in a container. Click `Create a job`:
 ![Create first Jenkins job](screenshots-new/07-jenkins-create-first-job.png)
@@ -42,7 +42,7 @@ Start by making a job that runs RailsGoat in a container. Click `Create a job`:
 Name the job `hold-RailsGoat-open` (or whatever you like). Select "Multibranch Pipeline" as the job type, and press OK:
 ![Create hold-RailsGoat-open](screenshots-new/08-jenkins-create-multibranch-pipeline.png)
 
-On the next screen name the job (whatever you like, `hold-RailsGoat-open` in the screenshot). Add a branch source specifying `file:///vagrant` as the `Project Repository`:
+On the next screen give the job a display name (whatever you like, `hold-RailsGoat-open` in the screenshot). Add a branch source specifying `file:///vagrant` as the `Project Repository`:
 ![Add branch source](screenshots-new/09-jenkins-add-branch-source.png)
 
 Scroll down to the `Build Configuration` section and specify [`sec-tests/hold-open/Jenkinsfile`](../sec-tests/semgrep/Jenkinsfile) as the `Script Path`. Then press Save:
@@ -71,7 +71,7 @@ steps {
 
 [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml) defines the components and configuration for a containerized RailsGoat and ZAP setup.
 
-This job will hold RailsGoat open so you can browse it by visiting http://localhost:3002. From there you can create an account, search for vulnerabilities manually, and generally get used to it.
+This job holds RailsGoat open so you can browse it by visiting http://localhost:3002. From there you can create an account, search for vulnerabilities manually, and generally get used to it.
 
 This hold-open job also includes a ZAP container which can analyze RailsGoat for vulnerabilities. You'll automate this later in the lab.
 
@@ -93,13 +93,24 @@ Now your shell is inside the ZAP container and can scan RailsGoat. Start a basel
 ```
 ![ZAP manual baseline scan](screenshots-new/16-manual-zap-baseline.png)
 
-http://railsgoat-web:3002 will work inside the container thanks to Docker Compose. The scan will take a minute or two to complete, and point out some basic security issues:
+http://railsgoat-web:3002 works inside the container thanks to Docker's networking, which runs a DNS server that maps service names (from [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml)) onto container IP addresses. The scan will take a minute or two to complete, and find some basic security issues:
 ![Baseline scan results](screenshots-new/17-zap-baseline-results.png)
 
-These issues are medium or low risk -- no SQL injection, cross-site scripting, no truly severe vulnerabilities. This is because we haven't configured ZAP to perform a detailed, authenticated scan. That'll happen later in the lab.
+These issues are medium or low risk -- no SQL injection, no cross-site scripting, no severe vulnerabilities. However, RailsGoat contains these vulnerabilities. Why didn't ZAP find them?
+
+The main reason is that [ZAP's baseline scan](https://www.zaproxy.org/docs/docker/baseline-scan/) performs some basic spidering and analyzes the results passively, rather than performing active or authenticated scanning. As a result ZAP's baseline scan doesn't find many URLs (14 during my testing):
+![ZAP small number of URLs](screenshots-new/18-small-number-of-URLs.png)
+
+ZAP can discover application URLs using two spidering methods:
+- The [traditional spider](https://www.zaproxy.org/docs/desktop/addons/automation-framework/job-spider/) makes HTTP requests and parses the resulting HTML for links.
+- The [AJAX spider](https://www.zaproxy.org/docs/desktop/addons/ajax-spider/automation/) makes HTTP requests and analyzes the resulting HTML *and* JavaScript. This works better in modern JavaScript-heavy web applications (but it's slower than the traditional spider).
+
+RailsGoat uses a mix of HTML and JavaScript links. Many of these links require being logged in to discover. Since the baseline scan uses only the traditional spider without authentication, the scan finishes quickly but usually doesn't find severe issues.
+
+Later in the lab we'll configure ZAP to perform a more in-depth scan, with authenticated traditional and AJAX spidering as well as active scanning. This results in a more thorough but slower scan.
 
 Back in the browser, cancel the `hold-RailsGoat-open` job:
-![Cancel hold-RailsGoat-Open job](screenshots-new/18-cancel-hold-open-job.png)
+![Cancel hold-RailsGoat-Open job](screenshots-new/19-cancel-hold-open-job.png)
 
 Now you're ready to start automating SAST and DAST via Jenkins.
 
