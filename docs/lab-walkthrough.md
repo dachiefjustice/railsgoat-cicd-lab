@@ -125,7 +125,9 @@ Back in the browser, cancel the `hold-RailsGoat-open` job:
 ![Cancel hold-RailsGoat-Open job](screenshots-new/19-cancel-hold-open-job.png)
 
 Now you've explored the lab a bit, and learned:
-- How to create a Jenkins job
+- How to create a Jenkins job from a `Jenkinsfile`
+- The basic structure of a Jenkins pipeline/job
+- How the `docker-compose` default networking setup allows containers to access each other via hostnames
 - How to identify which containers a job uses, and get a shell/execute commands in those containers
 - How to manually run a ZAP baseline scan
 
