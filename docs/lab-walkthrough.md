@@ -87,7 +87,7 @@ Here's what each component of this section does:
 - `$WORKSPACE` (part of the path to this job's `compose.yaml`) is a Jenkins-defined environment variable holding the absolute path to the "workspace" for this job. A Jenkins workspace contains the files and directories used by the job. In this case the workspace contains a copy of the lab's source code checked out from the `/vagrant` directory.
 
 ### ZAP Baseline Scan
-So far we've used the hold-open job to access This hold-open job includes a ZAP container which can analyze RailsGoat for vulnerabilities. Let's use this container to scan RailsGoat manually.
+So far we've used the hold-open job to access RailsGoat through a browser. This hold-open job includes a ZAP container which can analyze RailsGoat for vulnerabilities. Let's use this to scan RailsGoat manually.
 
 Get a shell in the VM, and use `docker ps` to list the currently running containers. You'll see two running containers -- one for ZAP, the other for RailsGoat.
 
