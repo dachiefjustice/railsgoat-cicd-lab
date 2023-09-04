@@ -67,7 +67,7 @@ This works because port 3002 is used in the [the job's `compose.yaml`](../sec-te
 #### Hold-Open Job Explainer
 Let's walk through this job in detail.
 
-First, the job's purpose: run RailsGoat and ZAP containers together until you stop them. This lets you browse RailsGoat and scan it from ZAP.
+First, the job's purpose: run RailsGoat and ZAP containers together until you stop them by cancelling the job. This lets you browse RailsGoat and manually scan it from ZAP.
 
 Next, the job's pipeline definition: [`sec-tests/hold-open/Jenkinsfile`](../sec-tests/hold-open/Jenkinsfile). The most important section of this `Jenkinsfile`:
 ```groovy
@@ -83,7 +83,7 @@ Here's what each component of this section does:
 - The `hold-open` stage is a descriptively-named [Jenkins stage](https://www.jenkins.io/doc/book/glossary/#stage). Stages group related pipeline steps together; common stage names include variations on `build`, `test`, and `deploy`. Naming stages descriptively is a good practice. Stage names show up in the Jenkins web interface:
 ![Jenkins pipeline steps](screenshots-new/jenkins-pipeline-hold-open-step.png)
 - The [Jenkins `sh` step](https://www.jenkins.io/doc/pipeline/steps/workflow-durable-task-step/#sh-shell-script) runs a shell script. In this case, it uses `docker-compose up` to run RailsGoat and ZAP containers as defined in [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml).
-- [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml) is a [Docker Compose file](https://docs.docker.com/compose/compose-file/03-compose-file/) that defines the components and configuration for RailsGoat and ZAP containers. Docker's networking includes a DNS server that maps service names from the Compose file onto container IP addresses. This lets containers access each other's ports via a friendly name, rather than needing to know each other's dynamically assigned IP addresses.
+- [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml) is a [Docker Compose file](https://docs.docker.com/compose/compose-file/03-compose-file/) that defines the components and configuration for RailsGoat and ZAP containers. Docker's networking includes a DNS server that maps service names from the Compose file onto container IP addresses. This lets containers access each other's ports via a static hostname, rather than needing to know each other's dynamically assigned IP addresses.
 - `$WORKSPACE` (part of the path to this job's `compose.yaml`) is a Jenkins-defined environment variable holding the absolute path to the "workspace" for this job. A Jenkins workspace contains the files and directories used by the job. In this case the workspace contains a copy of the lab's source code checked out from the `/vagrant` directory.
 
 ### ZAP Baseline Scan
