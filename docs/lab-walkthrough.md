@@ -112,12 +112,12 @@ The scan will finish in a minute or two and find some basic security issues:
 
 These issues are relatively uninteresting -- no SQL injection, cross-site scripting or other severe vulnerabilities. However, RailsGoat contains these vulnerabilities. Why didn't ZAP find them?
 
-The main reason is that [ZAP's baseline scan](https://www.zaproxy.org/docs/docker/baseline-scan/) performs some basic spidering and analyzes the results passively, rather than performing active or authenticated scanning. ZAP's baseline scan doesn't find many URLs (14 during my testing, which is a small subset of all RailsGoat URLs):
+The main reason is that [ZAP's baseline scan](https://www.zaproxy.org/docs/docker/baseline-scan/) performs basic HTTP spidering and analyzes the results passively, rather than performing active or authenticated scanning. ZAP's baseline scan doesn't find many URLs (14 during my testing, which is a small subset of all RailsGoat URLs):
 ![ZAP small number of URLs](screenshots-new/18-small-number-of-URLs.png)
 
 ZAP can discover application URLs using two spidering methods:
 - The [traditional spider](https://www.zaproxy.org/docs/desktop/addons/automation-framework/job-spider/) makes HTTP requests and parses the resulting HTML for links.
-- The [AJAX spider](https://www.zaproxy.org/docs/desktop/addons/ajax-spider/automation/) makes HTTP requests and analyzes the resulting HTML *and* JavaScript by "clicking" links inside a ZAP-managed web browser. This does a better job discovering URLs in JavaScript-heavy web applications, and is slower and more resource-intensive than the traditional spider.
+- The [AJAX spider](https://www.zaproxy.org/docs/desktop/addons/ajax-spider/automation/) makes HTTP requests and analyzes the resulting HTML *and* JavaScript by "clicking" links inside a ZAP-managed web browser. Compared with the traditional spider this does a better job discovering URLs in JavaScript-heavy web applications, and is slower and more resource-intensive.
 
 RailsGoat uses a mix of HTML and JavaScript URLs. Most RailsGoat URLs require being logged in to discover. Since ZAP's baseline scan uses the traditional spider without authentication or active scanning, the scan finishes quickly but doesn't find severe or complex-to-discover issues. Later in the lab you will configure ZAP to perform a more comprehensive, authenticated, slower scan.
 
