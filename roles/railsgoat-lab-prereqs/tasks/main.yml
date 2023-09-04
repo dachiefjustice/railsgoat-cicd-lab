@@ -12,6 +12,7 @@
       - software-properties-common
       - default-jre-headless
       - htop
+      - tree
 
 - name: Allow file:// URLs with git (used in the lab for using repo via vagrant://)
   become: true
