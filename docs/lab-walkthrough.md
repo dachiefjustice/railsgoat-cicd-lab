@@ -62,7 +62,7 @@ This means that Jenkins is running RailsGoat for you. Confirm this by opening a 
 
 From here play around with RailsGoat -- create yourself a test account, explore its features a bit. You can also search for and exploit vulnerabilities manually.
 
-This works because port 3002 is used in the [the job's `compose.yaml`](../sec-tests/hold-open/compose.yaml), and is forwarded in the [project's `Vagrantfile`](../Vagrantfile). As RailsGoat contains vulnerabilities, this port-forward is restricted to `127.0.0.1` so other computers on your network can't exploit these vulnerabilities.
+This works because port 3002 is used in the [the job's `compose.yaml`](../sec-tests/hold-open/compose.yaml), and is forwarded in the [project's `Vagrantfile`](../Vagrantfile). As RailsGoat contains vulnerabilities, this port-forward is restricted to `127.0.0.1`. With this configuration, other users or computers on your network can't exploit these vulnerabilities (without first compromising your Vagrant host).
 
 #### Hold-Open Job Explainer
 Let's walk through this job in detail.
