@@ -42,7 +42,7 @@ Once `vagrant up` is done you can access the Jenkins server at http://localhost:
   1) Create and run a Jenkins job from the [hold-open Jenkinsfile](sec-tests/hold-open/Jenkinsfile).
   2) Open http://localhost:3002 in your browser (or other HTTP tools)
 
-## 💡 Adjust the amount of RAM 💡
+## 💡 Adjust RAM Amount 💡
 Edit the [`Vagrantfile`](Vagrantfile):
 ```ruby
 config.vm.provider "virtualbox" do |vb|
@@ -52,7 +52,7 @@ end
 
 Run `vagrant reload` after adjusting RAM or other [`Vagrantfile`](Vagrantfile) settings.
 
-## 💡 Monitor resources & processes 💡
+## 💡 Monitor Resources & Processes 💡
 Use `htop`:
 ```sh
 vagrant ssh
