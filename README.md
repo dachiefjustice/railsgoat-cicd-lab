@@ -52,6 +52,8 @@ end
 
 Run `vagrant reload` after adjusting RAM or other [`Vagrantfile`](Vagrantfile) settings.
 
+You can also adjust CPU and RAM limits in the [ZAP job's `compose.yaml`](sec-tests/zap-scan-automation-framework/compose.yaml).
+
 ## 💡 Monitor Resources & Processes 💡
 Use `htop`:
 ```sh
