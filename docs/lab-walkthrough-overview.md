@@ -1,4 +1,4 @@
-# Lab Walkthrough
+# Lab Walkthrough: Overview
 ## Initial Setup
 Follow the [README](../README.md)'s basic usage instructions to get started:
 
@@ -62,7 +62,7 @@ This means that Jenkins is running RailsGoat for you. Confirm this by opening a 
 
 From here play around with RailsGoat -- create yourself a test account, log in, and poke around. You can also search for and exploit vulnerabilities manually.
 
-This works because port 3002 is used in the [the job's `compose.yaml`](../sec-tests/hold-open/compose.yaml), and is forwarded in the [project's `Vagrantfile`](../Vagrantfile). This port-forward is restricted to `127.0.0.1` so other machines on your network can't exploit these vulnerabilities (without first compromising your Vagrant host, at least).
+This works because port 3002 is used in the [the job's `compose.yaml`](../sec-tests/hold-open/compose.yaml), and is forwarded in the [project's `Vagrantfile`](../Vagrantfile). This port-forward is restricted to `127.0.0.1` so other machines on your network can't exploit these vulnerabilities (without first compromising your Vagrant host).
 
 #### Hold-Open Job Explainer
 Let's walk through this job in detail.
@@ -94,8 +94,8 @@ Get a shell in the VM (`vagrant ssh`) and list the currently running containers 
 You can find the ZAP container from the image name (it will contain `zaproxy`). Copy the ZAP container ID for use in the next command (`94572b01272a` in this example, yours will be different).
 
 ```sh
-vagrant ssh
-docker ps
+vagrant ssh # get a shell in the lab VM (if you don't already have one open)
+docker ps   # list running containers
 ```
 ![ZAP container ID](screenshots-new/exploration/15-find-zap-container.png)
 
