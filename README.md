@@ -4,7 +4,7 @@ This free and open-source lab teaches developers and security practitioners how 
 The lab is cross-platform (Vagrant + Virtualbox) and runs on your local machine. It's tested against current versions of Linux, Windows, Vagrant, and Virtualbox. It should work on Mac OS as well.
 
 ## Ways To Use This Lab
-- Follow the [walkthrough](docs/lab-walkthrough-exploration.md). You'll deploy a Jenkins server and use it to automate vulnerability analysis: SAST (with [semgrep](https://semgrep.dev/) and [brakeman](https://brakemanscanner.org/)) and DAST (with [ZAP](https://www.zaproxy.org/)).
+- Follow the [walkthrough](docs/lab-walkthrough-overview.md). You'll deploy a Jenkins server and use it to automate vulnerability analysis: SAST (with [semgrep](https://semgrep.dev/) and [brakeman](https://brakemanscanner.org/)) and DAST (with [ZAP](https://www.zaproxy.org/)).
 - Adapt the lab's code for your own purposes. It models these patterns:
   - Using Ansible to deploy and provision Jenkins (including plugins)
   - Using Docker and Docker Compose within declarative `Jenkinsfile`s to automate vulnerability analysis
