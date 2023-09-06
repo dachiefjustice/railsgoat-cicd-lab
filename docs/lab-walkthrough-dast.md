@@ -4,6 +4,7 @@ In this section you'll:
 - Automate an authenticated scan with Zed Attack Proxy
 
 ## ZAP Baseline Scan
-
+TODO: add automated ZAP baseline scan
 
 ## ZAP Authenticated Scan
+TODO: add automated ZAP authenticated scan
