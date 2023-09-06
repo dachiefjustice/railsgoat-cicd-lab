@@ -4,7 +4,7 @@ Open the [README](../README.md) and follow the basic usage instructions to get s
 
 ![Clone and Vagrant Up](screenshots-new/01-clone-and-vagrant-up.png)
 
-After running `vagrant up,` you'll see a lot of output as Vagrant provisions the VM:
+After running `vagrant up` you'll see a lot of output as Vagrant provisions the VM:
 1) Vagrant installs Ansible (using the [`ansible_local` provisioner's automatic installation](https://developer.hashicorp.com/vagrant/docs/provisioning/ansible_local#install))
 2) Ansible installs and configure Jenkins + Jenkins plugins, Docker, and Docker Compose.
 
@@ -13,7 +13,7 @@ The VM is ready once you return to a shell prompt preceded by a welcome message:
 
 ## Explore The Lab Environment
 ### Explore The CLI
-Get a shell in the lab machine, and check that you can access the lab's code via `/vagrant` (Vagrant performs this mapping automatically during `vagrant up`). This lab's Jenkins pipelines use the `/vagrant` mapping.
+Get a shell in the lab machine, and check that you can access the lab's code via `/vagrant` (Vagrant maps this automatically during `vagrant up`). This lab's Jenkins pipelines use the `/vagrant` mapping.
 
 ```sh
 vagrant ssh
@@ -45,7 +45,7 @@ Name the job `hold-RailsGoat-open` (or whatever you like). Select "Multibranch P
 On the next screen give the job a display name (whatever you like, `hold-RailsGoat-open` in the screenshot). Add a branch source specifying `file:///vagrant` as the `Project Repository`:
 ![Add branch source](screenshots-new/09-jenkins-add-branch-source.png)
 
-Scroll down to the `Build Configuration` section and specify [`sec-tests/hold-open/Jenkinsfile`](../sec-tests/hold-open/Jenkinsfile) as the `Script Path`. Then press Save:
+Scroll down to the `Build Configuration` section and specify `sec-tests/hold-open/Jenkinsfile` as the `Script Path`. Then press Save:
 ![Specify Jenkinsfile path](screenshots-new/10-jenkins-specify-Jenkinsfile-path.png)
 
 After pressing Save, Jenkins scans the repository and starts a build. Click the `#1 (hold-open)` link to open that build:
@@ -60,9 +60,9 @@ Scroll to the bottom. Notice that Jenkins is sitting on a line like `hold-open-z
 This means that Jenkins is running RailsGoat for you. Confirm this by opening a new tab and browsing to http://localhost:3002 and you should see the RailsGoat login page:
 ![RailsGoat login page](screenshots-new/14-railsgoat-login-page.png)
 
-From here play around with RailsGoat -- create yourself a test account, explore its features a bit. You can also search for and exploit vulnerabilities manually.
+From here play around with RailsGoat -- create yourself a test account, log in, and poke around. You can also search for and exploit vulnerabilities manually.
 
-This works because port 3002 is used in the [the job's `compose.yaml`](../sec-tests/hold-open/compose.yaml), and is forwarded in the [project's `Vagrantfile`](../Vagrantfile). As RailsGoat contains vulnerabilities, this port-forward is restricted to `127.0.0.1`. With this configuration, other users or computers on your network can't exploit these vulnerabilities (without first compromising your Vagrant host).
+This works because port 3002 is used in the [the job's `compose.yaml`](../sec-tests/hold-open/compose.yaml), and is forwarded in the [project's `Vagrantfile`](../Vagrantfile). This port-forward is restricted to `127.0.0.1` so other machines on your network can't exploit these vulnerabilities (without first compromising your Vagrant host, at least).
 
 #### Hold-Open Job Explainer
 Let's walk through this job in detail.
@@ -84,14 +84,14 @@ Here's what each component of this section does:
 ![Jenkins pipeline steps](screenshots-new/jenkins-pipeline-hold-open-step.png)
 - The [Jenkins `sh` step](https://www.jenkins.io/doc/pipeline/steps/workflow-durable-task-step/#sh-shell-script) runs a shell script. In this case, it uses `docker-compose up` to run RailsGoat and ZAP containers as defined in [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml).
 - [`sec-tests/hold-open/compose.yaml`](../sec-tests/hold-open/compose.yaml) is a [Docker Compose file](https://docs.docker.com/compose/compose-file/03-compose-file/) that defines the components and configuration for RailsGoat and ZAP containers. Docker's networking includes a DNS server that maps service names from the Compose file onto container IP addresses. This lets containers access each other's ports via a static hostname, rather than needing to know each other's dynamically assigned IP addresses.
-- `$WORKSPACE` (part of the path to this job's `compose.yaml`) is a Jenkins-defined environment variable holding the absolute path to the "workspace" for this job. A Jenkins workspace contains the files and directories used by the job. In this case the workspace contains a copy of the lab's source code checked out from the `/vagrant` directory.
+- `$WORKSPACE` (part of the path to this job's `compose.yaml`) is a Jenkins-defined environment variable holding the absolute path to the "workspace" for this job. A Jenkins workspace contains the job's files and directories. In this case the workspace contains a copy of the lab's source code checked out from the `/vagrant` directory.
 
 ### ZAP Baseline Scan
 So far we've used the hold-open job to access RailsGoat through a browser. This hold-open job includes a ZAP container which can analyze RailsGoat for vulnerabilities. Let's use this to scan RailsGoat manually.
 
-Get a shell in the VM, and use `docker ps` to list the currently running containers. You'll see two running containers -- one for ZAP, the other for RailsGoat.
+Get a shell in the VM (`vagrant ssh`) and list the currently running containers (`docker ps`). You'll see two running containers -- one for ZAP, the other for RailsGoat.
 
-You can tell which container is for ZAP from the image name (it will contain `zaproxy`). Copy the ZAP container ID for use in the next command (`94572b01272a` in this example, yours will be different).
+You can find the ZAP container from the image name (it will contain `zaproxy`). Copy the ZAP container ID for use in the next command (`94572b01272a` in this example, yours will be different).
 
 ```sh
 vagrant ssh
@@ -100,7 +100,7 @@ docker ps
 ![ZAP container ID](screenshots-new/15-find-zap-container.png)
 
 
-Now that you know the ZAP container ID, get a shell in the ZAP container and start a ZAP baseline scan:
+Now that you know the ZAP container ID, get a shell in the ZAP container and start a baseline scan:
 ```sh
 docker exec -it your-ZAP-container-ID bash      # get a shell in the ZAP container
 ./zap-baseline.py -t http://railsgoat-web:3002  # start a baseline scan
@@ -112,28 +112,27 @@ The scan will finish in a minute or two and find some basic security issues:
 
 These issues are relatively uninteresting -- no SQL injection, cross-site scripting or other severe vulnerabilities. However, RailsGoat contains these vulnerabilities. Why didn't ZAP find them?
 
-The main reason is that [ZAP's baseline scan](https://www.zaproxy.org/docs/docker/baseline-scan/) performs basic HTTP spidering and analyzes the results passively, rather than performing active or authenticated scanning. ZAP's baseline scan doesn't find many URLs (14 during my testing, which is a small subset of all RailsGoat URLs):
+[ZAP's baseline scan](https://www.zaproxy.org/docs/docker/baseline-scan/) performs basic HTTP spidering and analyzes the results passively, rather than performing active or authenticated scanning. ZAP's baseline scan doesn't find many URLs (14 during my testing, which is a small subset of all RailsGoat URLs):
 ![ZAP small number of URLs](screenshots-new/18-small-number-of-URLs.png)
 
 ZAP can discover application URLs using two spidering methods:
 - The [traditional spider](https://www.zaproxy.org/docs/desktop/addons/automation-framework/job-spider/) makes HTTP requests and parses the resulting HTML for links.
 - The [AJAX spider](https://www.zaproxy.org/docs/desktop/addons/ajax-spider/automation/) makes HTTP requests and analyzes the resulting HTML *and* JavaScript by "clicking" links inside a ZAP-managed web browser. Compared with the traditional spider this does a better job discovering URLs in JavaScript-heavy web applications, and is slower and more resource-intensive.
 
-RailsGoat uses a mix of HTML and JavaScript URLs. Most RailsGoat URLs require being logged in to discover. Since ZAP's baseline scan uses the traditional spider without authentication or active scanning, the scan finishes quickly but doesn't find severe or complex-to-discover issues. Later in the lab you will configure ZAP to perform a more comprehensive, authenticated, slower scan.
+RailsGoat uses a mix of HTML and JavaScript URLs. Most RailsGoat URLs are gated behind authentication. Since ZAP's baseline scan uses the traditional spider without authentication or active scanning, the scan finishes quickly but doesn't find severe or harder-to-discover issues. Later in the lab you will configure ZAP to perform a more comprehensive, authenticated, slower scan.
 
 Back in the browser, cancel the `hold-RailsGoat-open` job:
 ![Cancel hold-RailsGoat-Open job](screenshots-new/19-cancel-hold-open-job.png)
 
-Now you've explored the lab a bit, and learned:
+Now you've explored the lab environment a bit, and learned:
 - How to create a Jenkins job from a `Jenkinsfile`
 - The basic structure of a Jenkins pipeline/job
-- How the `docker-compose` default networking setup allows containers to access each other via hostnames
-- How to identify which containers a job uses, and get a shell/execute commands in those containers
+- How default `docker-compose` networking setup allows containers to access each other via hostnames
+- How to identify which containers a job uses, and manually execute commands in those containers
 - How to manually run a ZAP baseline scan
 
 ## Dynamic Analysis (DAST)
 ### ZAP Baseline Scan
-TODO: add automated ZAP baseline scan
 
 ### ZAP Authenticated Scan
 TODO: add automated ZAP authenticated scan
