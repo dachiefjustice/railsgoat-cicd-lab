@@ -131,8 +131,3 @@ Now you've explored the lab environment a bit, and learned:
 - How to identify which containers a job uses, and manually execute commands in those containers
 - How to manually run a ZAP baseline scan
 
-## Dynamic Analysis (DAST)
-### ZAP Baseline Scan
-
-### ZAP Authenticated Scan
-
