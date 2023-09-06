@@ -1,6 +1,6 @@
 # Lab Walkthrough
 ## Initial Setup
-Open the [README](../README.md) and follow the basic usage instructions to get started:
+Follow the [README](../README.md)'s basic usage instructions to get started:
 
 ![Clone and Vagrant Up](screenshots-new/exploration/01-clone-and-vagrant-up.png)
 
@@ -34,9 +34,9 @@ Log into the Jenkins web interface at http://localhost:8080 with the default cre
 
 ### RailsGoat
 #### Launch RailsGoat via Jenkins
-It's time set up the first Jenkins pipeline! Pipelines are sometimes called jobs -- you'll see both terms used. This lab uses Jenkins pipelines for security analysis.
+It's time set up the first Jenkins pipeline! Pipelines are sometimes called jobs -- you'll see these terms used interchangeably. A pipeline is typically defined in a `Jenkinsfile`. This lab uses Jenkins pipelines for security analysis. 
 
-Start by making a pipeline that runs RailsGoat and ZAP in containers, holding them open together so you can explore RailsGoat. Click `Create a job`:
+Start by making a job that runs RailsGoat and ZAP in containers, holding them open together so you can explore RailsGoat. Click `Create a job`:
 ![Create first Jenkins job](screenshots-new/exploration/07-jenkins-create-first-job.png)
 
 Name the job `hold-RailsGoat-open` (or whatever you like). Select "Multibranch Pipeline" as the job type, and press OK:
@@ -54,7 +54,7 @@ After pressing Save, Jenkins scans the repository and starts a build. Click the 
 Then click the `Console Output` button:
 ![Console output](screenshots-new/exploration/12-jenkins-console-output.png)
 
-Scroll to the bottom. Notice that Jenkins is sitting on a line like `hold-open-zap-holdopen-with-railsgoat-1`:
+Scroll to the bottom. Notice that Jenkins is sitting on a line like `Attaching to hold-open-zap-holdopen-with-railsgoat-1`:
 ![Holding RailsGoat open](screenshots-new/exploration/13-jenkins-holding-open.png)
 
 This means that Jenkins is running RailsGoat for you. Confirm this by opening a new tab and browsing to http://localhost:3002 and you should see the RailsGoat login page:
@@ -116,8 +116,8 @@ These issues are relatively uninteresting -- no SQL injection, cross-site script
 ![ZAP small number of URLs](screenshots-new/exploration/18-small-number-of-URLs.png)
 
 ZAP can discover application URLs using two spidering methods:
-- The [traditional spider](https://www.zaproxy.org/docs/desktop/addons/automation-framework/job-spider/) makes HTTP requests and parses the resulting HTML for links.
-- The [AJAX spider](https://www.zaproxy.org/docs/desktop/addons/ajax-spider/automation/) makes HTTP requests and analyzes the resulting HTML *and* JavaScript by "clicking" links inside a ZAP-managed web browser. Compared with the traditional spider this does a better job discovering URLs in JavaScript-heavy web applications, and is slower and more resource-intensive.
+- The [traditional spider](https://www.zaproxy.org/docs/desktop/addons/automation-framework/job-spider/) makes HTTP requests and parses the resulting HTML for URLs.
+- The [AJAX spider](https://www.zaproxy.org/docs/desktop/addons/ajax-spider/automation/) makes HTTP requests and analyzes the resulting HTML *and* JavaScript by "clicking" URLs inside a ZAP-managed web browser. Compared with the traditional spider this does a better job discovering URLs in JavaScript-heavy web applications, and is slower and more resource-intensive.
 
 RailsGoat uses a mix of HTML and JavaScript URLs. Most RailsGoat URLs are gated behind authentication. Since ZAP's baseline scan uses the traditional spider without authentication or active scanning, the scan finishes quickly but doesn't find severe or harder-to-discover issues. Later in the lab you will configure ZAP to perform a more comprehensive, authenticated, slower scan.
 
@@ -125,9 +125,9 @@ Back in the browser, cancel the `hold-RailsGoat-open` job:
 ![Cancel hold-RailsGoat-Open job](screenshots-new/exploration/19-cancel-hold-open-job.png)
 
 Now you've explored the lab environment a bit, and learned:
-- How to create a Jenkins job from a `Jenkinsfile`
+- How to create a Jenkins job from a `Jenkinsfile` pipeline definition
 - The basic structure of a Jenkins pipeline/job
-- How default `docker-compose` networking setup allows containers to access each other via hostnames
+- How `docker-compose` networking allows containers to access each other via hostnames
 - How to identify which containers a job uses, and manually execute commands in those containers
 - How to manually run a ZAP baseline scan
 
