@@ -1,4 +1,10 @@
 # Lab Walkthrough: Overview
+## Topics
+This walkthrough covers:
+1. Exploring the lab environment
+2. Automating DAST with ZAP
+3. Automating SAST with Semgrep and Brakeman
+
 ## Initial Setup
 Follow the [README](../README.md)'s basic usage instructions to get started:
 
