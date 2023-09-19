@@ -1,9 +1,7 @@
-# Lab Walkthrough: Overview
-## Topics
-This walkthrough covers:
-1. Exploring the lab environment
-2. Automating DAST with ZAP
-3. Automating SAST with Semgrep and Brakeman
+# Lab Walkthrough Topics
+1. [Exploring the lab environment](lab-walkthrough-exploration.md) (this page)
+2. [Automating DAST with ZAP](lab-walkthrough-dast.md)
+3. [Automating SAST with Semgrep and Brakeman](lab-walkthrough-sast.md)
 
 ## Initial Setup
 Follow the [README](../README.md)'s basic usage instructions to get started:
@@ -42,7 +40,7 @@ Log into the Jenkins web interface at http://localhost:8080 with the default cre
 #### Launch RailsGoat via Jenkins
 It's time set up the first Jenkins pipeline! Pipelines are sometimes called jobs -- you'll see these terms used interchangeably. A pipeline is typically defined in a `Jenkinsfile`. This lab uses Jenkins pipelines for security analysis. 
 
-Start by making a job that runs RailsGoat and ZAP in containers, holding them open together so you can explore RailsGoat. Click `Create a job`:
+Start by making a job that runs RailsGoat and ZAP (Zed Attack Proxy) in containers, holding them open together so you can explore RailsGoat. Click `Create a job`:
 ![Create first Jenkins job](screenshots-new/exploration/07-jenkins-create-first-job.png)
 
 Name the job `hold-RailsGoat-open` (or whatever you like). Select "Multibranch Pipeline" as the job type, and press OK:
