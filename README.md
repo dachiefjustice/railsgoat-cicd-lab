@@ -1,17 +1,18 @@
 # RailsGoat CI/CD Lab
-This free and open-source lab teaches developers and security practitioners how to integrate static analysis (SAST) and dynamic analysis (DAST) into a Jenkins CI/CD pipeline. It's based on [RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable Rails training app.
+This free and open-source lab teaches developers and security practitioners how to integrate static and dynamic analysis (SAST and DAST) into a Jenkins CI/CD pipeline. It's based on [RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable security training web app.
 
-The lab is cross-platform (Vagrant + Virtualbox) and runs on your local machine. It's tested against current versions of Linux, Windows, Vagrant, and Virtualbox. It should work on Mac OS as well.
+Thanks to Vagrant and Virtualbox, the lab is cross-platform and runs on your local machine. It's tested against current versions of Linux, Windows, Vagrant, and Virtualbox. It should work on Mac OS as well.
 
-## Ways To Use This Lab
+## How To Use This Lab
+Here are some ways you can use this lab:
 - Follow the [walkthrough](docs/lab-walkthrough-exploration.md). You'll deploy a Jenkins server and use it to automate vulnerability analysis: SAST (with [semgrep](https://semgrep.dev/) and [brakeman](https://brakemanscanner.org/)) and DAST (with [ZAP](https://www.zaproxy.org/)).
-- Adapt the lab's code for your own purposes. It models these patterns:
+- Adapt the lab's code for your own purposes. It models these DevSecOps patterns:
   - Using Ansible to deploy and provision Jenkins (including plugins)
   - Using Docker and Docker Compose within declarative `Jenkinsfile`s to automate vulnerability analysis
 - Learn by reading the lab's source code (explanatory comments are sprinkled throughout)
 
 # Basic Usage
-Set up a machine meeting these prerequisites:
+First set up a machine meeting these prerequisites:
 - Vagrant ([install instructions](https://developer.hashicorp.com/vagrant/docs/installation))
 - Virtualbox ([install instructions](https://www.virtualbox.org/wiki/Downloads))
 - Git ([install instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
@@ -33,7 +34,7 @@ Once `vagrant up` is done you can access the Jenkins server at http://localhost:
 ![Lab diagram](docs/railsgoat-cicd-lab.drawio.png)
 
 # Lab Tips
-## 💡 Access Jenkins 💡
+## 💡 Log Into Jenkins 💡
 **URL**: http://localhost:8080
 
 **Credentials**: `admin/admin`
@@ -82,4 +83,4 @@ Special thanks to the authors and contributors of key lab components:
 - [ZAP](https://www.zaproxy.org/)
 - [semgrep](https://semgrep.dev/)
 - [brakeman](https://brakemanscanner.org/)
-- [Jeff Geerling's Jenkins Ansible role](https://github.com/geerlingguy/ansible-role-jenkins)
+- [Jeff Geerling's Ansible role for Jenkins](https://github.com/geerlingguy/ansible-role-jenkins)
