@@ -28,7 +28,7 @@ cd railsgoat-cicd-lab
 vagrant up
 ```
 
-Once `vagrant up` is done you can access the Jenkins server at http://localhost:8080 (default credentials: `admin/admin`). Open the [lab walkthrough](docs/lab-walkthrough.md) to get started analyzing RailsGoat for vulnerabilities.
+Once `vagrant up` is done you can access the Jenkins server at http://localhost:8080 (default credentials: `admin/admin`). Open the [lab walkthrough](docs/lab-walkthrough-exploration.md) to start performing and automating vulnerability analysis.
 
 # Lab Architecture
 ![Lab diagram](docs/railsgoat-cicd-lab.drawio.png)
