@@ -1,7 +1,7 @@
 # RailsGoat CI/CD Lab
 This free and open-source lab teaches developers and security practitioners how to integrate static and dynamic analysis (SAST and DAST) into a Jenkins CI/CD pipeline. It's based on [RailsGoat](https://github.com/OWASP/railsgoat/), an intentionally-vulnerable security training web app.
 
-Thanks to Vagrant and Virtualbox, the lab is cross-platform and runs on your local machine. It's tested against current versions of Linux, Windows, Vagrant, and Virtualbox. It should work on Mac OS as well.
+Thanks to Vagrant and Virtualbox, the lab is cross-platform and runs on your local machine. I periodically test it against current versions of Linux, Windows, Vagrant, and Virtualbox.
 
 ## How To Use This Lab
 Here are some ways you can use this lab:
